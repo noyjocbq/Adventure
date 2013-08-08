@@ -28,6 +28,10 @@ Anyway, let's see..."</variable>
 <message identifier = 'taking'>Taking </message>
 <message identifier = 'inventory'>This is what you carry with you: </message>
 <message identifier = 'nocommand'>Sorry, I didn't quite understand you...</message>
+<message identifier = 'look_noobject'>I don't know what that is...</message>
+<message identifier = 'look_nolook'>I cannot look at that...</message>
+<message identifier = 'look_looking'>Looking: </message>
+<message identifier = 'error'>An error has ocurred...</message>
 <!--<message identifier = 's-->
 
 <!--  -->

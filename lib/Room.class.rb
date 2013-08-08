@@ -12,17 +12,17 @@ class Room
     @look_text    = look
     @inventory    = Inventory.new
   end
-  attr_reader :exits, :visits, :events, :inventory, :look_text, :looks
+  attr_reader :exits, :visits, :events, :inventory, :look_text, :looks, :info
   attr_writer :exits, :info, :visits, :inventory, :look_text, :events
 ##
 # Returns room info (xml)
 # followed by description text of itmes (xml) present in room inventory
 
-  def info
-    returnstring = @info + "\n"
-    @inventory.items.each {|item| returnstring += ("You see" + item.name) }
-    returnstring
-  end
+#  def info
+#    returnstring = @info + "\n"
+#    @inventory.items.each {|item| returnstring += ("You see" + item.name) }
+#    returnstring
+#  end
 
 ##
 # Increase number of visits

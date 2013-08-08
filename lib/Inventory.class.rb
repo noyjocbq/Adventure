@@ -28,6 +28,12 @@ class Inventory
   def withdraw(item)
     if @items.length > 0 then @items.delete_if {|x| x == item } end
   end
+
+  def present?(item)
+    answer = false
+    @items.each {|i| if i == item then answer = true end }
+    answer
+  end
   
   def add_health
     @health += 1
