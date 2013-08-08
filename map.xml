@@ -1,0 +1,291 @@
+<Map name = "Testmap">
+
+<!--  -->
+<!--  Basic map variables -->
+<!--  -->
+<variable name = "MAX_INDEX" value = "5|5"/>
+<variable name = "START_ROOM" value = "0|2"/>
+<variable name = "WELCOME_MESSAGE" value = "">Hi!
+
+Welcome to this game. 
+This is version 1.0 of the map. 
+
+When it's ready, you will go for a trasure hidden in this country. 
+You'll have to find objects and use them and do everything you have to do in the most classic of adventure games. 
+Anyway, let's see..."</variable>
+
+<!--  -->
+<!--  Messages -->
+<!--  -->
+
+<message identifier = 'quit'>Ok, bye then...</message>
+<message identifier = 'go_south'>South</message>
+<message identifier = 'go_north'>North</message>
+<message identifier = 'go_east'>East</message>
+<message identifier = 'go_west'>West</message>
+<message identifier = 'nogo'>You cannot go in that direction!</message>
+<message identifier = 'going'>Going </message>
+<message identifier = 'taking'>Taking </message>
+<message identifier = 'inventory'>This is what you carry with you: </message>
+<message identifier = 'nocommand'>Sorry, I didn't quite understand you...</message>
+<!--<message identifier = 's-->
+
+<!--  -->
+<!--  Rooms with their events and initial items -->
+<!--  -->
+
+<room location = "0|0">
+  <exits>S</exits>
+  <info>As you go deeper into the forest, it gets darker and closer...
+Suddenly, you realize that the way back has been closed by giand spider webs..
+You see the beasts getting closer...
+
+and closer.......
+
+and they eat you. 
+Well, you're dead...</info>
+</room>
+<!--  -->
+<room location = "0|1">
+  <exits>NE</exits>
+  <info>You go deeper into the forest. 
+It's quite dark and stifling, and you see some spider webs along the narrowing path...</info>
+</room>
+<!--  -->
+<room location = "0|2">
+  <exits>E</exits>
+  <info>You stand on a small path at the edge of a forest. 
+Beside you, there's an old man. He points to the path that leads into the forest in eastern direction and says:
+"Well, young man, there it is - the forest of Pewtyham. 
+There's a huge trasure hidden in there, and only the bravest can aspire to find it. 
+Are you up to the task?"...
+
+He grins maliciously... </info>  
+  <event name = "event_001">
+    <condition>visits &gt; 0</condition>
+    <command>replace</command>
+    <object>info</object>
+    <second_object>You stand on a small path at the edge of a forest. 
+    
+The old man says: "Well, sonny, what about the treasure? 
+Didn't I tell you not to come back until you found it?
+Hurry up, my dinner's getting cold!"
+
+    </second_object>
+    <message />
+  </event>    
+</room>
+<!--  -->
+<room location = "0|3">
+  <exits>S</exits>
+  <info>You stand before the count. He's nice and gives you something.</info>
+</room>
+<!--  -->
+<room location = "0|4">
+  <exits>S</exits>
+  <info>This is the courtyard. There's a guardian here who won't let you pass unless...</info>
+</room>
+<!--  -->
+<room location = "0|5">
+  <exits>WNE</exits>
+  <info>This is the entrance to the castle. There's a guardian here. You can pass, but he will follow you, so you should convince him...</info>
+</room>
+<!--  -->
+<room location = "1|0">
+  <exits>ES</exits>
+  <info>You are wandering through the deep, dark forest. 
+You can hardly see anything.</info>
+</room>
+<!--  -->
+<room location = "1|1">
+  <exits>NWE</exits>
+  <info>You are wandering through the deep, dark forest. 
+You can hardly see anything.</info>
+</room>
+<!--  -->
+<room location = "1|2">
+  <exits>WS</exits>
+  <info>You are just inside the forest. There's a wise man who gives you information on how to find the key to some place. 
+He will only tell you once, though, unless you ask...</info>
+</room>
+<!--  -->
+<room location = "1|3">
+  <exits>NES</exits>
+  <info>You reach a fork. 
+  There's an old derelict sign on the ground which says "To the Village", but you don't know where it originally pointed to.</info>
+</room>
+<!--  -->
+<room location = "1|4">
+  <exits>NES</exits>
+  <info>You are in a village. The villagers are quite helpful and give you some piece of advice. </info>
+</room>
+<!--  -->
+<room location = "1|5">
+  <exits>NEW</exits>
+  <info>You come to a bridge crossing a small but wild river. 
+On the north side, the path continues to a village. On the other side, the path forks and continues east and westwards.</info>  
+</room>
+<!--  -->
+<room location = "2|0">
+  <exits>NEW</exits>
+  <info>You are wandering through the deep, dark forest. 
+You can hardly see anything.</info>
+</room>
+<!--  -->
+<room location = "2|1">
+  <exits>WES</exits>
+  <info>You are wandering through the deep, dark forest. 
+You can hardly see anything.</info>
+</room>
+<!--  -->
+<room location = "2|2">
+  <exits>N</exits>
+  <info>There's a troll here in the forest. You'll have to fight him to be able to pass.</info>
+</room>
+<!--  -->
+<room location = "2|3">
+  <exits>WS</exits>
+  <item item_id = "key_west" />
+  <info>You're on your way somewhere, and you'll get a key here that you can use lateron.</info>
+  <look_text>As you take a closer look, you see that there's a rusty old key lying beside a tree under the dead leafs...</look_text>
+</room>
+<!--  -->
+<room location = "2|4">
+  <exits>WNE</exits>
+  <info>The path forks and continues north, west and eastwards.</info>
+</room>
+<!--  -->
+<room location = "2|5">
+  <exits>WE</exits>
+  <info>Here's a gate or something that blocks your way. You need some item to be able to pass. </info>
+</room>
+<!--  -->
+<room location = "3|0">
+  <exits>WS</exits>
+  <info>You are wandering through the deep, dark forest. 
+You can hardly see anything.</info>
+</room>
+<!--  -->
+<room location = "3|1">
+  <exits>NEW</exits>
+  <info>You are wandering through the deep, dark forest. 
+You can hardly see anything.</info>
+</room>
+<!--  -->
+<room location = "3|2">
+  <exits>WS</exits>
+  <info>You are inside a dark cave. There are bats that suck your blood, so you still need enough health...</info>
+</room>
+<!--  -->
+<room location = "3|3">
+  <exits>N</exits>
+  <info>You found the treasure!!! Congratulations!</info>
+</room>
+<!--  -->
+<room location = "3|4">
+  <exits>WES</exits>
+  <info>You are on a path that spreads out before you in three directions.</info>
+</room>
+<!--  -->
+<room location = "3|5">
+  <exits>NEW</exits>
+  <info>You walk trough wide grain fields.</info>
+</room>
+<!--  -->
+<room location = "4|0">
+  <exits>E</exits>
+  <info>This is an old house. You break open the door and enter. 
+As you look on the floor, you see an item that you can use lateron.</info>
+</room>  
+<!--  -->
+<room location = "4|1">
+  <exits>W</exits>
+  <info>Ok, you've entered the wrong place. 
+There's a giant here who kills you instantly. 
+
+You're dead. You lose...</info>
+</room>
+<!--  -->
+<room location = "4|2">
+  <exits>ES</exits>
+  <info>You are in a village. Villagers advise you not to go to the old house north of here, since it's bewitched. 
+Of course, you don't believe a word of it.</info>
+</room>  
+<!--  -->
+<room location = "4|3">
+  <exits>NES</exits>
+  <info>You are on a path that spreads out before you in three directions.</info>
+</room>
+<!--  -->
+<room location = "4|4">
+  <exits>NEWS</exits>
+  <info>You reach a crossroads. Four paths move away from you.</info>
+</room>
+<!--  -->
+<room location = "4|5">
+  <exits>WEN</exits>
+  <info>You are on a path that spreads out before you in three directions.</info>
+</room>
+<!--  -->
+<room location = "5|0">
+  <exits>WNS</exits>
+  <info>You are on a path that spreads out before you in three directions.</info>
+</room>
+<!--  -->
+<room location = "5|1">
+  <exits>NS</exits>
+  <info>You walk along a narrow country road.</info>
+</room>
+<!--  -->
+<room location = "5|2">
+  <exits>WNS</exits>
+  <info>You walk through wide oats fields.</info>
+</room>
+<!--  -->
+<room location = "5|3">
+  <exits>WNS</exits>
+  <info>You walk through wide oats fields.</info>
+</room>
+<!--  -->
+<room location = "5|4">
+  <exits>WNS</exits>
+  <info>You walk are in a small village. The villagers are not very friendly and hurt you.
+You lose health.  </info>
+</room>
+<!--  -->
+<room location = "5|5">
+  <exits>WENS</exits>
+  <info>You reach a crossroads. Four paths lead in four directions.</info>
+</room>
+
+
+<!--  -->
+<!--  Items in this map  -->
+<!--  -->
+
+<item item_id = "key_west">
+  <name>Key to the Western Fortress</name>
+  <identifier>key</identifier>
+  <look_text>You see an old fashioned and quite heavy iron key.</look_text>
+</item>
+<item item_id = "small_sword">
+  <name>A small sword</name>
+  <identifier>sword</identifier>
+  <look_text>This slightly rusty and about 4ft long sword was your grandfather's pride in the battle of Hastings... 
+or something like that.....
+  </look_text>
+</item>
+<item item_id = "candy">
+  <name>Some candy</name>
+  <identifier>candy</identifier>
+  <look_text>There's nothing like some sweet candy! It will make your dentist laugh on his yacht!</look_text>
+</item>
+
+
+<!--  -->
+<!--  What is initially in the player's inventory  -->
+<!--  -->
+
+<start_inventory>small_sword</start_inventory>
+<start_inventory>candy</start_inventory>
+</Map>
