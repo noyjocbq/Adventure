@@ -23,14 +23,16 @@ Anyway, let's see..."</variable>
 <message identifier = 'go_north'>North</message>
 <message identifier = 'go_east'>East</message>
 <message identifier = 'go_west'>West</message>
-<message identifier = 'nogo'>You cannot go in that direction!</message>
-<message identifier = 'going'>Going </message>
-<message identifier = 'taking'>Taking </message>
+<message identifier = 'go_nogo'>You cannot go in that direction!</message>
+<message identifier = 'go_going'>Going </message>
+<message identifier = 'take_taking'>Taking </message>
+<message identifier = 'take_noobject'>You cannot take that...</message>
+<message identifier = 'take_already_taken'>You already have that!</message>
 <message identifier = 'inventory'>This is what you carry with you: </message>
 <message identifier = 'nocommand'>Sorry, I didn't quite understand you...</message>
 <message identifier = 'look_noobject'>I don't know what that is...</message>
 <message identifier = 'look_nolook'>I cannot look at that...</message>
-<message identifier = 'look_looking'>Looking: </message>
+<message identifier = 'look_looking'>This is what you see: </message>
 <message identifier = 'error'>An error has ocurred...</message>
 <!--<message identifier = 's-->
 
@@ -67,15 +69,14 @@ Are you up to the task?"...
 He grins maliciously... </info>  
   <event name = "event_001">
     <condition>visits &gt; 0</condition>
+    <unique>true</unique>
     <command>replace</command>
     <object>info</object>
-    <second_object>You stand on a small path at the edge of a forest. 
+    <helper>You stand on a small path at the edge of a forest. 
     
 The old man says: "Well, sonny, what about the treasure? 
 Didn't I tell you not to come back until you found it?
-Hurry up, my dinner's getting cold!"
-
-    </second_object>
+Hurry up, my dinner's getting cold!"</helper>
     <message />
   </event>    
 </room>
@@ -149,9 +150,17 @@ You can hardly see anything.</info>
 <!--  -->
 <room location = "2|3">
   <exits>WS</exits>
-  <item item_id = "key_west" />
+<!--  <item item_id = "key_west" />-->
   <info>You're on your way somewhere, and you'll get a key here that you can use lateron.</info>
-  <look_text>As you take a closer look, you see that there's a rusty old key lying beside a tree under the dead leafs...</look_text>
+  <look_text>As you take a closer look, you see that there's a rusty old key lying beside a tree under the dead leaves...</look_text>
+  <event name = "event_002">
+    <condition>looks &gt; 0</condition>
+    <unique>true</unique>
+    <command>add_item</command>
+    <object>key_west</object>
+    <helper />
+    <message />
+  </event>      
 </room>
 <!--  -->
 <room location = "2|4">
