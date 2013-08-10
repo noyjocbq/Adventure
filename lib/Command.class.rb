@@ -74,7 +74,6 @@ class Command
               $message_handler.add('use_object_unknown')
             else
               if data[2] =~ /^door/
-# XXXXXXXXXXXXXX
                 if $map.room.doors.length == 0
                   $message_handler.add('door_nodoor')
                 else
@@ -82,13 +81,13 @@ class Command
                 end
               end
             end
-#              myhelper = Item.whatis($data[2])
           end
           
         end
  
 #        when data[0].downcase =~ /^help/ || data[0].downcase =~ /^command/
 #          ['help', 'help_command', nil]
+      else $message_handler.add('nocommand')
       end 
     end
     $message_handler.commit
@@ -119,14 +118,11 @@ class Command
     if object.look_text.nil? || object.look_text == ''
       object.look_text = object.info
     end
-#puts "Still alive 01"    
     $message_handler.add('look_looking')
     $message_handler.add_message(object.look_text)
     object.events.each{|e| e.check}
-#    answer = $message_handler.commit
-#    answer
+    true
   end
-#    $message_handler.pass_message(@object.look_text)
 
 ######
 #####

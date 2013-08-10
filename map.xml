@@ -20,6 +20,7 @@ go north/east/south/west (N/E/S/W)
 look               -> Look at present location
 look [at] &lt;object&gt; -> Look at an object
 take &lt;object&gt;
+use &lt;object&gt; [on] &lt;object&gt;
 </variable>
 
 <!--  -->
@@ -104,7 +105,20 @@ Hurry up, my dinner's getting cold!"</helper>
 <!--  -->
 <room location = "0|3">
   <exits>S</exits>
-  <info>You stand before the count. He's nice and gives you something.</info>
+  <info>You are inside the Western Fortress. 
+Everybody has gone out, so it's cold and dark in here. You can just
+see the shining iron of an axe above the chimney. </info>
+  <look_text>As you wander around the place and take closer look,
+you find a beautiful little amulet lying under a chair.</look_text>
+  <event name = "event_004">
+    <condition>looks &gt; 0</condition>
+    <unique>true</unique>
+    <command>add_item</command>
+    <object>amulet</object>
+    <helper />
+    <message />
+  </event>
+  <item item_id = "axe" />   
 </room>
 <!--  -->
 <room location = "0|4">
@@ -120,7 +134,8 @@ In the northern façade, there is a huge wooden entrance door.</info>
 </room>
 <!--  -->
 <room location = "0|5">
-  <exits>WNE</exits>
+<!--  <exits>WNE</exits> Original Exits! -->
+  <exits>NE</exits>
   <info>You reach a small abandoned hut in the forest. 
 There's a sign over it which reads:
 "Western Fortress. Visits: 6 pence"
@@ -148,7 +163,7 @@ There's an old woman who's weeping and murmuring:
  The count will be so angry if someone uses his magic sword
  during his absence... Oh dear, oh dear..."</info>
 <event name = "event_003">
-    <condition>visits &gt; 0</condition>
+    <condition>visits &gt; 1</condition>
     <unique>true</unique>
     <command>replace</command>
     <object>info</object>
@@ -216,12 +231,14 @@ under the dead leaves...</look_text>
 </room>
 <!--  -->
 <room location = "2|4">
-  <exits>WNE</exits>
+<!--  <exits>WNE</exits> Original Exits! -->
+  <exits>WN</exits>
   <info>You reach a fork. The path continues in three directions. </info>
 </room>
 <!--  -->
 <room location = "2|5">
-  <exits>WE</exits>
+<!--  <exits>WE</exits> Original Exits! -->
+  <exits>W</exits>
   <info>Here's a gate or something that blocks your way. You need some item to be able to pass. </info>
 </room>
 <!--  -->
@@ -331,6 +348,7 @@ You lose health.  </info>
   <identifier>key</identifier>
   <look_text>You see an old fashioned and quite heavy iron key.</look_text>
 </item>
+<!--  -->
 <item item_id = "small_sword">
   <name>A small sword</name>
   <identifier>sword</identifier>
@@ -338,10 +356,25 @@ You lose health.  </info>
 or something like that.....
   </look_text>
 </item>
+<!--  -->
 <item item_id = "candy">
   <name>Some candy</name>
   <identifier>candy</identifier>
-  <look_text>There's nothing like some sweet candy! It will make your dentist laugh on his yacht!</look_text>
+  <look_text>There's nothing like some sweet candy! 
+It will make your dentist laugh on his yacht!</look_text>
+</item>
+<!--  -->
+<item item_id = "amulet">
+  <name>A silver amulet</name>
+  <identifier>amulet</identifier>
+  <look_text>This shiny silver amulet bears some marks that seem
+letters, but you cannot read them.</look_text>
+</item>
+<!--  -->
+<item item_id = "axe">
+  <name>A shining axe</name>
+  <identifier>axe</identifier>
+  <look_text>This axe is really sharp, be careful!</look_text>
 </item>
 
 <!--  -->

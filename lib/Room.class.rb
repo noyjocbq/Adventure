@@ -17,7 +17,7 @@ class Door < GeneralInfo
     else
       @open = false
     end
-    @object = object
+    @object = Item.whatis(object)
   end
   attr_reader :exit
 ######
@@ -30,16 +30,19 @@ class Door < GeneralInfo
   def open(object)
     answer = false
     if not @object.nil?
+    
+#puts object.to_s + '###' + @object.to_s + '+++'    
+    
       if object == @object
         answer = @open = true
-        self.parent.exits << @exit
+        $map.room.exits << @exit
         $message_handler.add('door_opens')
       else
         $message_handler.add('door_noopen')
       end
     else
       answer = @open = true
-      self.parent.exits << @exit
+      $map.room.exits << @exit
       $message_handler.add('door_opens')
     end
     answer

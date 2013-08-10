@@ -93,19 +93,30 @@ class Map
           xe.text("info"),
           xe.text("look_text")
         )
-        xe.elements.each("event") do |event|
-          @room[ [tmp[0].to_i, tmp[1].to_i] ].add_event(
-            event.attributes["name"],
-            event.text("unique"),
-            event.text("condition"),
-            event.text("command"), 
-            event.text("object"), 
-            event.text("helper"),  
-            event.text("message")
-          )
-        end
-        xe.elements.each("item") do |item|
-          @room[ [tmp[0].to_i, tmp[1].to_i] ].inventory.add_byId(item.attributes["item_id"])
+      xe.elements.each("event") do |event|
+        @room[ [tmp[0].to_i, tmp[1].to_i] ].add_event(
+          event.attributes["name"],
+          event.text("unique"),
+          event.text("condition"),
+          event.text("command"), 
+          event.text("object"), 
+          event.text("helper"),  
+          event.text("message")
+        )
+      end
+      xe.elements.each("item") do |item|
+        @room[ [tmp[0].to_i, tmp[1].to_i] ].inventory.add(Item.which(item.attributes["item_id"]))
+#_byId(item.attributes["item_id"])
+      end
+      xe.elements.each("door") do |door|
+        @room[ [tmp[0].to_i, tmp[1].to_i] ].add_door(
+          door.attributes["name"],
+          door.text("exit"),
+          door.text("open"),
+          door.text("object"),
+          door.text("info"),
+          door.text("look_text")
+        )
       end
     end
     xml.elements.each("Map/start_inventory") do |item|
