@@ -22,7 +22,7 @@ class Item < GeneralInfo
     @events = []
     super(name, info, look_text)
   end
-  attr_reader :item_id, :name, :look_text, :identifier
+  attr_reader :item_id, :identifier
 
 ######
 ####

@@ -160,7 +160,7 @@ You can hardly see anything.</info>
 There's an old woman who's weeping and murmuring:
 "Oh dear, oh dear, I lost the key to we Western Fortress
  somewhere here in the forest, close to the village. 
- The count will be so angry if someone uses his magic sword
+ The count will be so angry if someone uses his magic amulet
  during his absence... Oh dear, oh dear..."</info>
 <event name = "event_003">
     <condition>visits &gt; 1</condition>

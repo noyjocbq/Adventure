@@ -26,65 +26,18 @@ class Command
       when data[0].downcase =~ /^(quit|exit)/
         self.quit
       when data[0].downcase =~ /^(get|fetch|grab|take)/
-        myobject = Item.whatis(data[1].downcase)
-        if myobject.nil? || myobject == ''
-          $message_handler.add('take_noobject')
-        else
-          if $inventory.present?(myobject)
-            $message_handler.add('take_already_taken')
-          elsif not $map.room.inventory.present?(myobject)
-            $message_handler.add('take_noobject')
-          else
-            self.take(myobject)
-          end
-        end
-
+        data.shift
+        data.each {|x| x = x.downcase }
+        self.take(data)
       when data[0].downcase =~ /^(look|exam)/ 
-        data.each {|x| x = x.downcase}
-        if data[1].nil? || data[1] == ''
-          self.look($map.room)
-        else
-          if data[1].downcase =~ /at/ 
-            data[1] = data[2]
-          end
-          myobject = Item.whatis(data[1].to_s)
-          if myobject.nil? || myobject == ''
-            $message_handler.add('look_noobject')
-          else
-            if $inventory.present?(myobject)
-              self.look(myobject)
-            else
-              $message_handler.add('look_nolook')
-            end
-          end
-        end
+        data.shift
+        data.each {|x| x = x.downcase }
+        self.look(data)
       when data[0].downcase =~ /^use/
+        data.shift
         data.each{|x| x = x.downcase}
-        if data[2] =~ /^(with|on|at)/
-          data[2] = data[3]
-        end
-        if data[1].nil?
-          $message_handler.add('use_noobject')
-        else
-          if data[2].nil?
-            $message_handler.add('use_nohelper')
-          else
-            myobject = Item.whatis(data[1])
-            if myobject.nil?
-              $message_handler.add('use_object_unknown')
-            else
-              if data[2] =~ /^door/
-                if $map.room.doors.length == 0
-                  $message_handler.add('door_nodoor')
-                else
-                  answer = $map.room.doors[0].open(myobject)
-                end
-              end
-            end
-          end
-          
-        end
- 
+        self.use(data)
+
 #        when data[0].downcase =~ /^help/ || data[0].downcase =~ /^command/
 #          ['help', 'help_command', nil]
       else $message_handler.add('nocommand')
@@ -112,18 +65,43 @@ class Command
 ##
 # look
 #
-  def look(object)
-    answer = nil
-    object.look
-    $message_handler.add('look_looking')
-    if object.look_text.nil? || object.look_text == ''
-      $message_handler.add_message(object.look_text)
-    else
-      $message_handler.add_message(object.info)
+  def look(data)
+    def look_at(object)
+      object.look
+      $message_handler.add('look_looking')
+      if object.look_text.nil? || object.look_text == ''
+        $message_handler.add_message(object.info)
+      else
+        $message_handler.add_message(object.look_text)
+      end
+      object.events.each{|e| e.check}    
     end
-    object.events.each{|e| e.check}
-    true
+
+    if data[0].nil? || data[0] == ''
+      look_at($map.room)
+    else
+      if data[0].downcase =~ /at/ 
+        data[0] = data[1]
+      end
+      myobject = Item.whatis(data[0].to_s)
+      if myobject.nil? || myobject == ''
+        $message_handler.add('look_noobject')
+      else
+        if $inventory.present?(myobject)
+          look_at(myobject)
+        else
+          $message_handler.add('look_nolook')
+        end
+      end
+    end
   end
+
+
+
+
+
+
+
 
 ######
 #####
@@ -179,15 +157,58 @@ class Command
 # take
 # 
 
-  def take (object)
-#puts object.to_s  
-#    $message_handler.new_screen
-    $message_handler.add_message(Message.text('take_taking') + ' ' + object.name)
-    $inventory.add(object)
-    $map.room.inventory.withdraw(object)
+  def take (data)
+    myobject = Item.whatis(data[0].downcase)
+    if myobject.nil? || myobject == ''
+      $message_handler.add('take_noobject')
+    else
+      if $inventory.present?(myobject)
+        $message_handler.add('take_already_taken')
+      elsif not $map.room.inventory.present?(myobject)
+        $message_handler.add('take_noobject')
+      else
+        $message_handler.add_message(Message.text('take_taking') + ' ' + myobject.name)
+        $inventory.add(myobject)
+        $map.room.inventory.withdraw(myobject)
+      end
+    end
   end
 
-  
+######
+#####
+####
+###
+##
+# use
+#
+
+  def use(data)
+    if data[1] =~ /^(with|on|at)/
+      data[1] = data[2]
+    end
+    if data[0].nil?
+      $message_handler.add('use_noobject')
+    else
+      if data[1].nil?
+        $message_handler.add('use_nohelper')
+      else
+        myobject = Item.whatis(data[0])
+        if myobject.nil?
+          $message_handler.add('use_object_unknown')
+        else
+          if data[1] =~ /^door/
+            if $map.room.doors.length == 0
+              $message_handler.add('door_nodoor')
+            else
+              answer = $map.room.doors[0].open(myobject)
+            end
+          end
+        end
+      end
+    end
+
+  end
+
 ######
 #####
 ####
