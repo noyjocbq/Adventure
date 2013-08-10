@@ -44,5 +44,6 @@ $message_handler.commit
 while input = gets.chomp
   ObjectSpace.garbage_collect
   command_handler = Command.new(input)
+  command_handler = nil
 end
 exit true
