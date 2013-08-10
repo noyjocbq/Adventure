@@ -115,11 +115,12 @@ class Command
   def look(object)
     answer = nil
     object.look
-    if object.look_text.nil? || object.look_text == ''
-      object.look_text = object.info
-    end
     $message_handler.add('look_looking')
-    $message_handler.add_message(object.look_text)
+    if object.look_text.nil? || object.look_text == ''
+      $message_handler.add_message(object.look_text)
+    else
+      $message_handler.add_message(object.info)
+    end
     object.events.each{|e| e.check}
     true
   end
