@@ -6,13 +6,21 @@
 <variable name = "MAX_INDEX" value = "5|5"/>
 <variable name = "START_ROOM" value = "0|2"/>
 <variable name = "WELCOME_MESSAGE" value = "">Hi!
-
 Welcome to this game. 
-This is version 1.0 of the map. 
+This is version 0.2 of the map. 
 
 When it's ready, you will go for a trasure hidden in this country. 
-You'll have to find objects and use them and do everything you have to do in the most classic of adventure games. 
-Anyway, let's see..."</variable>
+You'll have to find objects and use them and do everything you 
+have to do in the most classic of adventure games. 
+
+Presently supported Commands are:
+quit (Q)
+inventory (I)
+go north/east/south/west (N/E/S/W)
+look               -> Look at present location
+look [at] &lt;object&gt; -> Look at an object
+take &lt;object&gt;
+</variable>
 
 <!--  -->
 <!--  Messages -->
@@ -34,6 +42,14 @@ Anyway, let's see..."</variable>
 <message identifier = 'look_nolook'>I cannot look at that...</message>
 <message identifier = 'look_looking'>This is what you see: </message>
 <message identifier = 'error'>An error has ocurred...</message>
+<message identifier = 'use_nohelper'>What shall I use it on?</message>
+<message identifier = 'use_noobject'>What shall I use?</message>
+<message identifier = 'door_opens'>The door opens...</message>
+<message identifier = 'door_closes'>The door closes</message>
+<message identifier = 'door_noopen'>The door won't open...</message>
+<message identifier = 'door_noclose'>The door won't close</message>
+<message identifier = 'door_locked'>The door is locked!</message>
+<message identifier = 'door_nodoor'>There's no door there!</message>
 <!--<message identifier = 's-->
 
 <!--  -->
@@ -61,24 +77,29 @@ It's quite dark and stifling, and you see some spider webs along the narrowing p
 <room location = "0|2">
   <exits>E</exits>
   <info>You stand on a small path at the edge of a forest. 
-Beside you, there's an old man. He points to the path that leads into the forest in eastern direction and says:
+  
+Beside you, there's an old man. He points to the path that leads
+into the forest in eastern direction and says:
+
 "Well, young man, there it is - the forest of Pewtyham. 
-There's a huge trasure hidden in there, and only the bravest can aspire to find it. 
+There's a huge trasure hidden in there, and only the bravest
+can aspire to find it. 
+I want you to go into the forest, find the treasure and bring it here. 
 Are you up to the task?"...
 
 He grins maliciously... </info>  
   <event name = "event_001">
-    <condition>visits &gt; 0</condition>
+    <condition>visits &gt; 1</condition>
     <unique>true</unique>
     <command>replace</command>
     <object>info</object>
     <helper>You stand on a small path at the edge of a forest. 
     
 The old man says: "Well, sonny, what about the treasure? 
-Didn't I tell you not to come back until you found it?
+Didn't I tell you not to come back until you have it?
 Hurry up, my dinner's getting cold!"</helper>
     <message />
-  </event>    
+  </event>
 </room>
 <!--  -->
 <room location = "0|3">
@@ -88,12 +109,22 @@ Hurry up, my dinner's getting cold!"</helper>
 <!--  -->
 <room location = "0|4">
   <exits>S</exits>
-  <info>This is the courtyard. There's a guardian here who won't let you pass unless...</info>
+  <door name ='door_western_fortress'>
+    <exit>N</exit>
+    <object>key_west</object>
+    <open>false</open>
+  </door>
+  <info>You enter the courtyard. 
+Everything is quiet. 
+In the northern façade, there is a huge wooden entrance door.</info>
 </room>
 <!--  -->
 <room location = "0|5">
   <exits>WNE</exits>
-  <info>This is the entrance to the castle. There's a guardian here. You can pass, but he will follow you, so you should convince him...</info>
+  <info>You reach a small abandoned hut in the forest. 
+There's a sign over it which reads:
+"Western Fortress. Visits: 6 pence"
+In northern direction, a path continues to the castle.</info>
 </room>
 <!--  -->
 <room location = "1|0">
@@ -110,25 +141,44 @@ You can hardly see anything.</info>
 <!--  -->
 <room location = "1|2">
   <exits>WS</exits>
-  <info>You are just inside the forest. There's a wise man who gives you information on how to find the key to some place. 
-He will only tell you once, though, unless you ask...</info>
+  <info>You are just inside the forest. 
+There's an old woman who's weeping and murmuring:
+"Oh dear, oh dear, I lost the key to we Western Fortress
+ somewhere here in the forest, close to the village. 
+ The count will be so angry if someone uses his magic sword
+ during his absence... Oh dear, oh dear..."</info>
+<event name = "event_003">
+    <condition>visits &gt; 0</condition>
+    <unique>true</unique>
+    <command>replace</command>
+    <object>info</object>
+    <helper>You are just inside the forest. 
+The old woman still murmurs about her lost key...</helper>
+    <message />
+  </event>    
 </room>
 <!--  -->
 <room location = "1|3">
   <exits>NES</exits>
   <info>You reach a fork. 
-  There's an old derelict sign on the ground which says "To the Village", but you don't know where it originally pointed to.</info>
+There's an old derelict sign on the ground which says:
+"To the Village", but you don't know where it originally pointed to.</info>
 </room>
 <!--  -->
 <room location = "1|4">
   <exits>NES</exits>
-  <info>You are in a village. The villagers are quite helpful and give you some piece of advice. </info>
+  <info>You enter a small village. 
+At the village well, you see a girl who looks at you curiously. 
+You decide to talk to her. 
+She tells you that the whole valley is governed by a count
+whose castle is beyond the river in the west. </info>
 </room>
 <!--  -->
 <room location = "1|5">
   <exits>NEW</exits>
-  <info>You come to a bridge crossing a small but wild river. 
-On the north side, the path continues to a village. On the other side, the path forks and continues east and westwards.</info>  
+  <info>You come to a bridge crossing a small noisy river. 
+On the north side, the path continues to a village. 
+On the other side, the path forks and continues east and west.</info>  
 </room>
 <!--  -->
 <room location = "2|0">
@@ -150,9 +200,11 @@ You can hardly see anything.</info>
 <!--  -->
 <room location = "2|3">
   <exits>WS</exits>
-<!--  <item item_id = "key_west" />-->
-  <info>You're on your way somewhere, and you'll get a key here that you can use lateron.</info>
-  <look_text>As you take a closer look, you see that there's a rusty old key lying beside a tree under the dead leaves...</look_text>
+  <info>You are on a narrow path through the forest. 
+A lot of foliage covers the ground, moved by a cold wind. </info>
+  <look_text>As you take a closer look and move some of the foliage,
+you see that there's a rusty old key lying beside a tree
+under the dead leaves...</look_text>
   <event name = "event_002">
     <condition>looks &gt; 0</condition>
     <unique>true</unique>
@@ -165,7 +217,7 @@ You can hardly see anything.</info>
 <!--  -->
 <room location = "2|4">
   <exits>WNE</exits>
-  <info>The path forks and continues north, west and eastwards.</info>
+  <info>You reach a fork. The path continues in three directions. </info>
 </room>
 <!--  -->
 <room location = "2|5">
@@ -271,11 +323,9 @@ You lose health.  </info>
   <info>You reach a crossroads. Four paths lead in four directions.</info>
 </room>
 
-
 <!--  -->
 <!--  Items in this map  -->
 <!--  -->
-
 <item item_id = "key_west">
   <name>Key to the Western Fortress</name>
   <identifier>key</identifier>
@@ -294,11 +344,9 @@ or something like that.....
   <look_text>There's nothing like some sweet candy! It will make your dentist laugh on his yacht!</look_text>
 </item>
 
-
 <!--  -->
 <!--  What is initially in the player's inventory  -->
 <!--  -->
-
 <start_inventory>small_sword</start_inventory>
 <start_inventory>candy</start_inventory>
 </Map>

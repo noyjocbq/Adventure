@@ -112,6 +112,7 @@ class Map
       inventory.add_byId(item.text)
     end
     @room_id = @@START_ROOM
+    @room[@room_id].visit
     self
   end
   attr_reader :welcome_message
@@ -151,15 +152,9 @@ class Map
         end 
       end
       @room[ @room_id ].visit
-      return Message.text('go_going') +
-      case direction
-        when /N/: Message.text('go_north')
-        when /S/: Message.text('go_south')
-        when /E/: Message.text('go_east')
-        when /W/: Message.text('go_west')
-      end + '...'
+      return true
     else
-      return Message.text('go_nogo')
+      return false
     end
     
   end 
