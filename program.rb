@@ -12,7 +12,7 @@ Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
 #
 $message_handler = Messager.new
 $inventory = Inventory.new
-$map = Map.new('map.xml', $inventory)
+$map = Map.new('map.xml')
 
 ######
 #####

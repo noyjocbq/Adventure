@@ -1,0 +1,8 @@
+v0.4 - Start history
+
+#2013 08 10
+
+corrected room 2|3
+outsourced Command.use
+outsourced Command.take
+outsourced Command.look

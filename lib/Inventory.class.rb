@@ -72,7 +72,8 @@ class Inventory
 # remove an item 
 #
   def withdraw(item)
-    if @items.length > 0 then @items.delete_if {|x| x == item } end
+#    if @items.length > 0 then @items.delete_if {|x| x == item } end
+    if @items.length > 0 then @items.delete(item) end
   end
 
 ######

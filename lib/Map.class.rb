@@ -39,7 +39,7 @@ end
 class Map
   @@MAX_INDEX = [2,2]
   @@START_ROOM = [0,1]
-  def initialize(mapfile, inventory)
+  def initialize(mapfile)
     @room = {}
 #    @item = {}
     @items = []
@@ -120,7 +120,7 @@ class Map
       end
     end
     xml.elements.each("Map/start_inventory") do |item|
-      inventory.add_byId(item.text)
+      $inventory.add_byId(item.text)
     end
     @room_id = @@START_ROOM
     @room[@room_id].visit
