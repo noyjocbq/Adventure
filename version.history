@@ -11,13 +11,13 @@ v0.5
 #2013 08 18
 
 updated map to 0.3
-imlemented tk-GUI
-imlemented drop
-imlemented give
-imlemented open
-imlemented identifier in doors
-imlemented phrase in events
-imlemented events in map [unchecked]
+implemented tk-GUI
+implemented drop
+implemented give
+implemented open
+implemented identifier in doors
+implemented phrase in events
+implemented events in map [unchecked]
 created Classes.rb
 deleted *.class.rb
 created Adventure

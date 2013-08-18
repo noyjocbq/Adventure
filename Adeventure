@@ -33,7 +33,7 @@ $command_handler = Command.new
 ####
 ###
 ##
-# Start program
+# Start GUI
 Tk.mainloop()
 
 ######

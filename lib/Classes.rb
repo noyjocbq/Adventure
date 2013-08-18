@@ -7,11 +7,8 @@
 ###
 ####
 ######
-
-
 require 'rexml/document'
 require 'tk'
-
 include REXML
 
 ######
@@ -38,10 +35,10 @@ class GeneralInfo < Object
     @looks
   end
   
-  def nvl (input1, nilval)
-    return input1 unless input1.nil?
-    return nilval
-  end
+  #~ def nvl (input1, nilval)
+    #~ return input1 unless input1.nil?
+    #~ return nilval
+  #~ end
   
 end
 
@@ -186,16 +183,11 @@ class Map
   attr_reader :welcome_message, :name, :initial
   attr_writer :initial 
 
-######
-####
-###
-##  
-#   Map Methods
+#   
 ##
 ###
 ####
-######
-
+###### Map Methods
 
 ######
 #####
@@ -233,11 +225,12 @@ class Map
 ####
 ###
 ##
-# returns current room or room by location
+# returns current room
 #
   def room 
     @room[@room_id] 
   end
+  
 ######
 #####
 ####
@@ -257,7 +250,7 @@ end
 ####
 ###
 ##
-#  Classes Door
+#  Class Door
 ##
 ###
 ####
@@ -326,7 +319,6 @@ class Door < GeneralInfo
 ##
 # which & whatis
 #
-  
   def Door.whatis(phrase)
     ObjectSpace.each_object(Door) do |door|
       return door unless Regexp.new(door.identifier).=~(phrase) == nil
@@ -365,15 +357,11 @@ class Room < GeneralInfo
   attr_reader :exits, :visits, :events, :inventory, :look_text, :looks, :info, :doors, :people
   attr_writer :exits, :info, :visits, :inventory, :look_text, :events
 
-######
-####
-###
-##
-#  Room Methods
+#  
 ##
 ###
 ####
-######
+###### Room Methods
 
 ######
 #####
@@ -481,7 +469,6 @@ end # class
 ####
 ######
 class Screen
-#  @root = ''
   @message = ''
   @input = ''
   def initialize(titel = 'Untitled')
@@ -544,9 +531,19 @@ class Screen
     @input.focus
     return @root
   end # initialize
-#  attr_reader :root, :message, :input
-#  attr_writer :message, :input 
 
+# 
+##
+###
+####
+###### Screen method
+
+######
+#####
+####
+###
+##
+# what to do when return key was pressed
   def return_pressed
     phrase = @input.get("1.0", "end").chomp.sub(Regexp.new($message_handler.prompt), '').sub("\n", '')
       $command_handler.digest(phrase)
@@ -557,6 +554,12 @@ class Screen
 #      end #while
   end #  return_pressed
 
+######
+#####
+####
+###
+##
+# pass message text to the message window
   def message_win(message)
     @message.configure("state"=>"normal")
     @message.insert('end', message)
@@ -567,6 +570,12 @@ class Screen
     message
   end # message_win
   
+######
+#####
+####
+###
+##
+# pass message text to the echo window
   def echo_win(message)
     @echo.configure("state"=>"normal")
     @echo.insert('end', "#{message}")
@@ -605,15 +614,11 @@ class Item < GeneralInfo
   end
   attr_reader :item_id, :identifier, :events
 
-######
-####
-###
-##
-#  Item Methods
+#  
 ##
 ###
 ####
-######
+###### Item Methods
 
 
 ######
@@ -720,16 +725,12 @@ class Inventory
   end
   attr_reader :items, :health
   attr_writer :items, :health
-######
-####
-###
-##
-#  Inventory Methods
-##
-###
-####
-######  
 
+#  
+##
+###
+####
+######  Inventory Methods
 
 ######
 #####
@@ -821,7 +822,7 @@ class Inventory
     @health
   end
 
-end
+end # class Inventory
 
 ######
 ####
@@ -832,9 +833,7 @@ end
 ###
 ####
 ######
-
 class Event < GeneralInfo
-#  @@events = []
   def initialize (name, unique, condition, phrase, command, object, helper, message, associated)
     super(name, nil, nil)
     @triggered        = 0
@@ -855,15 +854,11 @@ class Event < GeneralInfo
 attr_reader :name, :condition, :command, :object, :helper, 
   :message, :triggered, :associated, :unique
   
-######
-####
-###
-##
-#  Event Methods
+#  
 ##
 ###
 ####
-######
+###### Event Methods
 
 ######
 #####
@@ -938,7 +933,7 @@ attr_reader :name, :condition, :command, :object, :helper,
     answer
   end # check 
 
-end
+end # class Event
 
 ######
 ####
@@ -950,20 +945,17 @@ end
 ####
 ######
 class Command
-
-######
-#####
-####
-###
-##
-# Return command handler
-
   def initialize 
     self
   end
-  
-  attr_reader :verb, :object, :helper
+    attr_reader :verb, :object, :helper
   attr_writer :verb, :object, :helper
+
+# 
+##
+###
+####
+###### Command Methods
   
 ######
 #####
@@ -1036,22 +1028,18 @@ class Command
     $message_handler.commit
   end
   
-######
-####
-###
-##
-# Commands
+# 
 ##
 ###
 ####
-######
+###### Commands
 
 ######
 #####
 ####
 ###
 ##
-# look
+# look (at)
 #
   def look_at(object)
     object.look
@@ -1064,7 +1052,6 @@ class Command
     end
     object.events.each{|e| e.check} unless object.events.nil?  
   end
-
 
   def look(data)
     if data[0].nil? || data[0] == ''
@@ -1144,7 +1131,6 @@ class Command
 ##
 # take
 # 
-
   def take (data)
     myobject = Item.whatis(data[0])
     $message_handler.new_screen
@@ -1170,7 +1156,6 @@ class Command
 ##
 # drop
 # 
-
   def drop (data)
     myobject = Item.whatis(data[0])
     $message_handler.new_screen
@@ -1194,7 +1179,6 @@ class Command
 ##
 # give
 # 
-
   def give (data)
     if data[1] =~ /to/
       data[1] = data[2]
@@ -1236,7 +1220,6 @@ class Command
 ##
 # use
 #
-
   def use(data)
     $message_handler.new_screen
     if data[1] =~ /^(with|on|at)/
@@ -1272,7 +1255,6 @@ class Command
 ##
 # open a door (with an object)
 #
-
   def open(data)
     $message_handler.new_screen
     if data[1] =~ /^(with|using)/
@@ -1299,7 +1281,6 @@ class Command
 ##
 # say
 #
-
   def say(data)
     $message_handler.new_screen
     if data[0].nil?
@@ -1340,7 +1321,7 @@ class Command
     exit  
   end
 
-end # class
+end # class Command
 
 ######
 ####
@@ -1352,14 +1333,19 @@ end # class
 ####
 ######
 class Message < GeneralInfo
-
   def initialize (identifier, text)
     super(identifier, text, nil)
     self
 #    @@messages.push(self)
   end
-#  attr_reader :message
 
+######
+#####
+####
+###
+##
+# return text of the message identified by identifier
+# 
   def Message.text(identifier)
     ObjectSpace.each_object(Message) do |message|
       return message.info if message.name == identifier
@@ -1386,6 +1372,12 @@ class Messager
     self
   end
   attr_reader :message, :newscreen, :prompt
+
+# 
+##
+###
+####
+###### Message Handler Methods
 
 ######
 #####
@@ -1435,7 +1427,7 @@ class Messager
 ####
 ###
 ##
-# add text cache
+# add text to cache
 #     
   def add_message (text)
     @message << text.to_s << "\n"
@@ -1469,4 +1461,4 @@ class Messager
     $screen_handler.message_win( "\n" * @newscreen )
   end
   
-end
+end # class Messager
