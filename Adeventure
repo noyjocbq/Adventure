@@ -1,0 +1,46 @@
+#!/usr/bin/ruby
+
+######
+####
+###
+##
+#  This is version 0.5 of the executable file
+##
+###
+####
+######
+
+require "lib/Classes"
+#Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
+#require 'tk'
+#require test/unit
+
+######
+#####
+####
+###
+##
+# Initialize handlers, player inventory and map
+#
+$inventory = Inventory.new
+$map = Map.new('map.xml')
+$screen_handler  = Screen.new($map.name)
+$message_handler = Messager.new
+$command_handler = Command.new
+
+######
+#####
+####
+###
+##
+# Start GUI
+Tk.mainloop()
+
+######
+#####
+####
+###
+##
+# That's it...
+
+exit true

@@ -7,7 +7,7 @@
 <variable name = "START_ROOM" value = "0|2"/>
 <variable name = "WELCOME_MESSAGE" value = "">Hi!
 Welcome to this game. 
-This is version 0.2 of the map. 
+This is version 0.3 of the map. 
 
 When it's ready, you will go for a trasure hidden in this country. 
 You'll have to find objects and use them and do everything you 
@@ -17,10 +17,13 @@ Presently supported Commands are:
 quit (Q)
 inventory (I)
 go north/east/south/west (N/E/S/W)
-look               -> Look at present location
-look [at] &lt;object&gt; -> Look at an object
+look [at &lt;object&gt;] -- Look at location [or object]
 take &lt;object&gt;
-use &lt;object&gt; [on] &lt;object&gt;
+drop &lt;object&gt;
+open &lt;object&gt; [with &lt;object&gt;]
+use &lt;object&gt; [on/with &lt;object&gt;]
+say &lt;words&gt;
+give &lt;object&gt; to &lt;person&gt;
 </variable>
 
 <!--  -->
@@ -51,12 +54,27 @@ use &lt;object&gt; [on] &lt;object&gt;
 <message identifier = 'door_noclose'>The door won't close</message>
 <message identifier = 'door_locked'>The door is locked!</message>
 <message identifier = 'door_nodoor'>There's no door there!</message>
-<!--<message identifier = 's-->
+<message identifier = 'say_nowords'>What would you like to say?</message>
+<message identifier = 'say_nopeople'>There's nobody to talk to. 
+And remember: talking to oneself is 
+the first sign of madness...</message>
+<message identifier = 'say_noreaction'>There's no reaction...</message>
+<message identifier = 'drop_noobject'>You cannot drop that</message>
+<message identifier = 'drop_notpresent'>You don't have that</message>
+<message identifier = 'drop_dropping'>Dropping </message>
+<message identifier = 'give_noreceiver'>Who do you want to give it to?</message>
+<message identifier = 'give_noobject'>You cannot give that away</message>
+<message identifier = 'give_notpresent'>You cannot give that away.</message>
+<message identifier = 'give_giving'>Giving</message>
+<message identifier = 'give_giving_to'>to</message>
+<message identifier = 'open_opening'>Opening</message>
+<message identifier = 'open_noobject'>What do you want to open?</message>
+<message identifier = 'open_nohelper'>What do you want to open the door with?</message>
+<message identifier = 'open_noopen'>It won't open...</message>
 
 <!--  -->
 <!--  Rooms with their events and initial items -->
 <!--  -->
-
 <room location = "0|0">
   <exits>S</exits>
   <info>As you go deeper into the forest, it gets darker and closer...
@@ -92,7 +110,7 @@ He grins maliciously... </info>
   <event name = "event_001">
     <condition>visits &gt; 1</condition>
     <unique>true</unique>
-    <command>replace</command>
+    <command>replace_object_by_helper</command>
     <object>info</object>
     <helper>You stand on a small path at the edge of a forest. 
     
@@ -101,6 +119,45 @@ Didn't I tell you not to come back until you have it?
 Hurry up, my dinner's getting cold!"</helper>
     <message />
   </event>
+  <person person_id="old_man">
+    <name>an old man</name>
+    <identifier>man</identifier>
+    <info_text>He looks at you with bright blue eyes.</info_text>
+    <event name = "old_man_01">
+      <condition />
+      <phrase>give.+(herb|weed)</phrase>
+      <unique>true</unique>
+      <command>add_item_to_player_inventory</command>
+      <object>herbs</object>
+      <helper />
+      <message>&gt; "Here, have these herbs.
+&gt; I hope you have an adequate pipe yourself!"</message>
+    </event>     
+    <event name = "old_man_02">
+      <condition />
+      <phrase>hello|hi</phrase>
+      <unique>false</unique>
+      <command>nil</command>
+      <object></object>
+      <helper />
+      <message>&gt; "Hi There!"</message>
+    </event>     
+    <event name = "old_man_03">
+      <condition />
+      <phrase>who</phrase>
+      <unique>false</unique>
+      <command>nil</command>
+      <object></object>
+      <helper />
+      <message>&gt; "Well, I'm the local herb merchant here.
+I've often wandered through this forest looking for 
+herbs and toadstools, and one day I heard people talking
+about a treasure hidden deep in a cave guarded by a giant. 
+Well, I'm not brave or strong, but you are. 
+So I want YOU to go into the forest and find the trasure. 
+In exchange, you might get some of my herbs..."</message>
+    </event>     
+  </person>
 </room>
 <!--  -->
 <room location = "0|3">
@@ -113,7 +170,7 @@ you find a beautiful little amulet lying under a chair.</look_text>
   <event name = "event_004">
     <condition>looks &gt; 0</condition>
     <unique>true</unique>
-    <command>add_item</command>
+    <command>add_item_to_inventory</command>
     <object>amulet</object>
     <helper />
     <message />
@@ -125,6 +182,7 @@ you find a beautiful little amulet lying under a chair.</look_text>
   <exits>S</exits>
   <door name ='door_western_fortress'>
     <exit>N</exit>
+    <identifier>door</identifier>
     <object>key_west</object>
     <open>false</open>
   </door>
@@ -134,8 +192,10 @@ In the northern façade, there is a huge wooden entrance door.</info>
 </room>
 <!--  -->
 <room location = "0|5">
-<!--  <exits>WNE</exits> Original Exits! -->
+  <exits>WNE</exits> 
+<!--
   <exits>NE</exits>
+-->
   <info>You reach a small abandoned hut in the forest. 
 There's a sign over it which reads:
 "Western Fortress. Visits: 6 pence"
@@ -158,19 +218,58 @@ You can hardly see anything.</info>
   <exits>WS</exits>
   <info>You are just inside the forest. 
 There's an old woman who's weeping and murmuring:
-"Oh dear, oh dear, I lost the key to we Western Fortress
- somewhere here in the forest, close to the village. 
- The count will be so angry if someone uses his magic amulet
- during his absence... Oh dear, oh dear..."</info>
-<event name = "event_003">
+"Oh dear, oh dear! Oh dear, oh dear!"...</info>
+  <event name = "event_003">
     <condition>visits &gt; 1</condition>
     <unique>true</unique>
-    <command>replace</command>
+    <command>replace_object_by_helper</command>
     <object>info</object>
     <helper>You are just inside the forest. 
 The old woman still murmurs about her lost key...</helper>
     <message />
-  </event>    
+  </event>
+  <person person_id="old_woman">
+    <name>an old woman</name>
+    <identifier>woman</identifier>
+    <info_text>She cries and cries. Maybe she needs some help?</info_text>
+    <event name = "old_woman_01">
+      <condition />
+      <phrase>wrong|matter|up</phrase>
+      <unique>false</unique>
+      <command>nil</command>
+      <object />
+      <helper />
+      <message>&gt; "Oh dear me, I'll be in so much trouble..."</message>
+    </event>
+    <event name = "old_woman_02">
+      <condition />
+      <phrase>help</phrase>
+      <unique>false</unique>
+      <command>nil</command>
+      <object />
+      <helper />
+      <message>&gt; "Oh, if you would really like to help me...
+Listen: The Western Fortress is abandoned, all the
+soldiers were called to the king's palace. 
+They told me to clean the place before they get back,
+but I've lost the key! Please help me! 
+The key must be somewhere close to the village.
+If you find it, will you bring it to me?"</message>
+    </event>
+    <event name = "old_woman_03">
+      <condition>inventory.present?("key_west")</condition>
+      <phrase />
+      <unique>true</unique>
+      <command>add_item_to_player_inventory</command>
+      <object>small_pipe</object>
+      <helper />
+      <message>&gt; "Oh, my dear young man, you are so brave!
+I am so proud of you that you found the key 
+and brought it to me!
+Here, take this pipe as a small reward. 
+Thank heavens no-one entered the fortress and stole the amulet!"</message>
+    </event>
+  </person>
 </room>
 <!--  -->
 <room location = "1|3">
@@ -183,10 +282,49 @@ There's an old derelict sign on the ground which says:
 <room location = "1|4">
   <exits>NES</exits>
   <info>You enter a small village. 
-At the village well, you see a girl who looks at you curiously. 
-You decide to talk to her. 
-She tells you that the whole valley is governed by a count
-whose castle is beyond the river in the west. </info>
+It is quite deserted, but at the village well, 
+you see a girl who looks at you curiously.</info>
+  <person person_id="village_girl">
+    <name>a beautiful young girl</name>
+    <identifier>girl</identifier>
+    <info_text>She looks very nice. 
+Perhaps you should talk to her instead of staring at her...</info_text>
+
+    <event name = "village_girl_01">
+      <condition />
+      <phrase>hi|hello</phrase>
+      <unique>false</unique>
+      <command>nil</command>
+      <object />
+      <helper />
+      <message>&gt; "Hi stranger! Can I help you?"</message>
+    </event>
+
+    <event name = "village_girl_02">
+      <condition />
+      <phrase>help</phrase>
+      <unique>false</unique>
+      <command>nil</command>
+      <object />
+      <helper />
+      <message>&gt; "Of course I will help you. What's the problem?"</message>
+    </event>
+
+    <event name = "village_girl_03">
+      <condition />
+      <phrase>fortr|count|sold</phrase>
+      <unique>false</unique>
+      <command>nil</command>
+      <object />
+      <helper />
+      <message>&gt; "Well, there's an old fortress across the river
+and to the west. 
+It's been looking quite empty lately, though there never
+used to be many soldiers around.
+What do you want there?"</message>
+    </event>
+
+  </person>
 </room>
 <!--  -->
 <room location = "1|5">
@@ -220,10 +358,10 @@ A lot of foliage covers the ground, moved by a cold wind. </info>
   <look_text>As you take a closer look and move some of the foliage,
 you see that there's a rusty old key lying beside a tree
 under the dead leaves...</look_text>
-  <event name = "event_002">
+  <event name = "event_2|3_01">
     <condition>looks &gt; 0</condition>
     <unique>true</unique>
-    <command>add_item</command>
+    <command>add_item_to_inventory</command>
     <object>key_west</object>
     <helper />
     <message />
@@ -237,8 +375,7 @@ under the dead leaves...</look_text>
 </room>
 <!--  -->
 <room location = "2|5">
-<!--  <exits>WE</exits> Original Exits! -->
-  <exits>W</exits>
+  <exits>WE</exits>
   <info>Here's a gate or something that blocks your way. You need some item to be able to pass. </info>
 </room>
 <!--  -->
@@ -265,7 +402,7 @@ You can hardly see anything.</info>
 </room>
 <!--  -->
 <room location = "3|4">
-  <exits>WES</exits>
+  <exits>WS</exits>
   <info>You are on a path that spreads out before you in three directions.</info>
 </room>
 <!--  -->
@@ -295,13 +432,54 @@ Of course, you don't believe a word of it.</info>
 </room>  
 <!--  -->
 <room location = "4|3">
-  <exits>NES</exits>
+  <exits>NE</exits>
   <info>You are on a path that spreads out before you in three directions.</info>
 </room>
 <!--  -->
 <room location = "4|4">
-  <exits>NEWS</exits>
-  <info>You reach a crossroads. Four paths move away from you.</info>
+  <exits>S</exits>
+  <info>You are inside the hut of the seer. 
+It's quite dark in here, and there's a strange smell in the air.</info>
+  <person person_id="seer">
+    <name>the seer</name>
+    <identifier>seer</identifier>
+    <info_text>He's very old, his eyes are closed most of the time. 
+His white hair flows around his shoulders.</info_text>
+    <event name = "seer_01">
+      <condition />
+      <phrase>hi|hello</phrase>
+      <unique>false</unique>
+      <command />
+      <object />
+      <helper />
+      <message>&gt; "Hello stranger. 
+I have not yet seen you, but your paths are well-known
+to my inner eye.
+In what way can I help you?</message>
+    </event>
+    <event name = "seer_02">
+      <condition />
+      <phrase>door|gate|help</phrase>
+      <unique>false</unique>
+      <command></command>
+      <object />
+      <helper />
+      <message>&gt; "Well, I'm not sure if I should give you this
+piece of information. The king would not like it. 
+If only you had some token to identify you 
+as a loyal kingsman"</message>
+    </event>
+    <event name = "seer_03">
+      <condition>inventory.present?("amulet")</condition>
+      <phrase />
+      <unique>true</unique>
+      <command>add_item_to_room_inventory</command>
+      <object>undefined</object>
+      <helper>4|4</helper>
+      <message></message>
+    </event>
+
+  </person>
 </room>
 <!--  -->
 <room location = "4|5">
@@ -330,7 +508,7 @@ Of course, you don't believe a word of it.</info>
 </room>
 <!--  -->
 <room location = "5|4">
-  <exits>WNS</exits>
+  <exits>NS</exits>
   <info>You walk are in a small village. The villagers are not very friendly and hurt you.
 You lose health.  </info>
 </room>
@@ -376,10 +554,33 @@ letters, but you cannot read them.</look_text>
   <identifier>axe</identifier>
   <look_text>This axe is really sharp, be careful!</look_text>
 </item>
+<!--  -->
+<item item_id = "herbs">
+  <name>Some herbs</name>
+  <identifier>herbs</identifier>
+  <look_text>These herbs smell really delicious</look_text>
+</item>
+<!--  -->
+<item item_id = "small_pipe">
+  <name>A small pipe</name>
+  <identifier>pipe</identifier>
+  <look_text>This pipe seems ideal for smoking some kind of herbal matter</look_text>
+</item>
+<!--  -->
+<item item_id = "undefined">
+  <name>Dummy Item</name>
+  <identifier>something</identifier>
+  <look_text>dummy text</look_text>
+</item>
 
 <!--  -->
 <!--  What is initially in the player's inventory  -->
 <!--  -->
 <start_inventory>small_sword</start_inventory>
 <start_inventory>candy</start_inventory>
+<!-- DEBUG -->
+<!--
+<start_inventory>amulet</start_inventory>
+-->
+<!-- END DEBUG -->
 </Map>
