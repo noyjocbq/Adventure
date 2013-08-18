@@ -3,7 +3,7 @@
 ###
 ##
 #  This is version 0.5 of the Classes file
-##
+## (the first version...)
 ###
 ####
 ######
@@ -28,7 +28,7 @@ class GeneralInfo < Object
     @looks        = 0
   end
   attr_reader :name, :info, :look_text, :looks
-  attr_writer :info, :look_text, :looks
+  attr_writer :info, :look_text #, :looks
   
   def look 
     @looks += 1
@@ -484,6 +484,7 @@ class Screen
       title(titel) 
 #      minsize(400, 400)
     }
+
 # Message window    
     @message = TkText.new(@root) { 
       height 20
@@ -495,6 +496,7 @@ class Screen
     @message.configure("state"=>"normal")
     @message.insert('end', $map.welcome_message)
     @message.configure("state"=>"disabled")
+
 # Input echo window    
     @echo = TkText.new(@root) {
       height 5
@@ -505,6 +507,7 @@ class Screen
     @echo.pack("side"=>"top", "fill"=>"x")
     @echo.grid("columnspan"=>2, "sticky"=>"nsew")
     @echo.configure("state"=>"disabled")
+
 # Input line window    
     myprompt = TkLabel.new(@root) { 
       text ">"
@@ -536,7 +539,7 @@ class Screen
 ##
 ###
 ####
-###### Screen method
+###### Screen methods
 
 ######
 #####
@@ -777,7 +780,6 @@ class Inventory
 # remove an item 
 #
   def withdraw(item)
-#    if @items.length > 0 then @items.delete_if {|x| x == item } end
     if @items.length > 0 then @items.delete(item) end
   end
 
@@ -1292,7 +1294,7 @@ class Command
         phrase = data[0]
       end # if data.length > 1
       if $map.room.people?
-        $message_handler.pass_message('* "' + phrase + '"' + ("\n"*2))
+        $message_handler.pass_message('* "' + phrase.capitalize + '"' + ("\n"*2))
         dont_answer = false
         $map.room.people.each do |person|
           person.events.each do |event|

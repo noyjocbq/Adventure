@@ -17,7 +17,7 @@ Presently supported Commands are:
 quit (Q)
 inventory (I)
 go north/east/south/west (N/E/S/W)
-look [at &lt;object&gt;] -- Look at location or [object]
+look [at &lt;object&gt;] -- Look at location [or object]
 take &lt;object&gt;
 drop &lt;object&gt;
 open &lt;object&gt; [with &lt;object&gt;]
@@ -124,7 +124,8 @@ Hurry up, my dinner's getting cold!"</helper>
     <identifier>man</identifier>
     <info_text>He looks at you with bright blue eyes.</info_text>
     <event name = "old_man_01">
-      <condition>give.+(herb|weed)</condition>
+      <condition />
+      <phrase>give.+(herb|weed)</phrase>
       <unique>true</unique>
       <command>add_item_to_player_inventory</command>
       <object>herbs</object>
@@ -133,7 +134,8 @@ Hurry up, my dinner's getting cold!"</helper>
 &gt; I hope you have an adequate pipe yourself!"</message>
     </event>     
     <event name = "old_man_02">
-      <condition>hello|hi</condition>
+      <condition />
+      <phrase>hello|hi</phrase>
       <unique>false</unique>
       <command>nil</command>
       <object></object>
@@ -141,7 +143,8 @@ Hurry up, my dinner's getting cold!"</helper>
       <message>&gt; "Hi There!"</message>
     </event>     
     <event name = "old_man_03">
-      <condition>who</condition>
+      <condition />
+      <phrase>who</phrase>
       <unique>false</unique>
       <command>nil</command>
       <object></object>
