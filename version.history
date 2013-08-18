@@ -2,7 +2,26 @@ v0.4 - Start history
 
 #2013 08 10
 
-corrected room 2|3
 outsourced Command.use
 outsourced Command.take
 outsourced Command.look
+
+
+v0.5
+#2013 08 18
+
+updated map to 0.3
+imlemented tk-GUI
+imlemented drop
+imlemented give
+imlemented open
+imlemented identifier in doors
+imlemented phrase in events
+imlemented events in map [unchecked]
+created Classes.rb
+deleted *.class.rb
+created Adventure
+deleted program.rb
+
+
+
