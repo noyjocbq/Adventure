@@ -7,7 +7,7 @@ outsourced Command.take
 outsourced Command.look
 
 
-v0.5
+v0.5 (v0.5.1 with cleanups)
 #2013 08 18
 
 updated map to 0.3
@@ -22,6 +22,4 @@ created Classes.rb
 deleted *.class.rb
 created Adventure
 deleted program.rb
-
-
 
