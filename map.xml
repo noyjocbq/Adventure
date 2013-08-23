@@ -6,12 +6,12 @@
 <variable name = "MAX_INDEX" value = "5|5"/>
 <variable name = "START_ROOM" value = "0|2"/>
 <variable name = "WELCOME_MESSAGE" value = "">Hi!
-Welcome to this game. 
-This is version 0.3 of the map. 
+Welcome to this game.
+This is version 0.3 of the map.
 
-When it's ready, you will go for a trasure hidden in this country. 
-You'll have to find objects and use them and do everything you 
-have to do in the most classic of adventure games. 
+When it's ready, you will go for a trasure hidden in this country.
+You'll have to find objects and use them and do everything you
+have to do in the most classic of adventure games.
 
 Presently supported Commands are:
 quit (Q)
@@ -55,8 +55,8 @@ give &lt;object&gt; to &lt;person&gt;
 <message identifier = 'door_locked'>The door is locked!</message>
 <message identifier = 'door_nodoor'>There's no door there!</message>
 <message identifier = 'say_nowords'>What would you like to say?</message>
-<message identifier = 'say_nopeople'>There's nobody to talk to. 
-And remember: talking to oneself is 
+<message identifier = 'say_nopeople'>There's nobody to talk to.
+And remember: talking to oneself is
 the first sign of madness...</message>
 <message identifier = 'say_noreaction'>There's no reaction...</message>
 <message identifier = 'drop_noobject'>You cannot drop that</message>
@@ -83,38 +83,38 @@ You see the beasts getting closer...
 
 and closer.......
 
-and they eat you. 
+and they eat you.
 Well, you're dead...</info>
 </room>
 <!--  -->
 <room location = "0|1">
   <exits>NE</exits>
-  <info>You go deeper into the forest. 
+  <info>You go deeper into the forest.
 It's quite dark and stifling, and you see some spider webs along the narrowing path...</info>
 </room>
 <!--  -->
 <room location = "0|2">
   <exits>E</exits>
-  <info>You stand on a small path at the edge of a forest. 
-  
+  <info>You stand on a small path at the edge of a forest.
+
 Beside you, there's an old man. He points to the path that leads
 into the forest in eastern direction and says:
 
-"Well, young man, there it is - the forest of Pewtyham. 
+"Well, young man, there it is - the forest of Pewtyham.
 There's a huge trasure hidden in there, and only the bravest
-can aspire to find it. 
-I want you to go into the forest, find the treasure and bring it here. 
+can aspire to find it.
+I want you to go into the forest, find the treasure and bring it here.
 Are you up to the task?"...
 
-He grins maliciously... </info>  
+He grins maliciously... </info>
   <event name = "event_001">
     <condition>visits &gt; 1</condition>
     <unique>true</unique>
     <command>replace_object_by_helper</command>
     <object>info</object>
-    <helper>You stand on a small path at the edge of a forest. 
-    
-The old man says: "Well, sonny, what about the treasure? 
+    <helper>You stand on a small path at the edge of a forest.
+
+The old man says: "Well, sonny, what about the treasure?
 Didn't I tell you not to come back until you have it?
 Hurry up, my dinner's getting cold!"</helper>
     <message />
@@ -124,7 +124,7 @@ Hurry up, my dinner's getting cold!"</helper>
     <identifier>man</identifier>
     <info_text>He looks at you with bright blue eyes.</info_text>
     <event name = "old_man_01">
-      <condition />
+      <condition>inventory.present?('candy')</condition>
       <phrase>give.+(herb|weed)</phrase>
       <unique>true</unique>
       <command>add_item_to_player_inventory</command>
@@ -132,8 +132,19 @@ Hurry up, my dinner's getting cold!"</helper>
       <helper />
       <message>&gt; "Here, have these herbs.
 &gt; I hope you have an adequate pipe yourself!"</message>
-    </event>     
+    </event>
     <event name = "old_man_02">
+      <condition>inventory.present?('candy') == false</condition>
+      <phrase>give.+(herb|weed)</phrase>
+      <unique>true</unique>
+      <command />
+      <object />
+      <helper />
+      <message>&gt; "Well, I hope you don't expect me to
+give you some of my precious herbs without something
+in exchange..."</message>
+    </event>
+    <event name = "old_man_03">
       <condition />
       <phrase>hello|hi</phrase>
       <unique>false</unique>
@@ -141,28 +152,43 @@ Hurry up, my dinner's getting cold!"</helper>
       <object></object>
       <helper />
       <message>&gt; "Hi There!"</message>
-    </event>     
-    <event name = "old_man_03">
+    </event>
+    <event name = "old_man_04">
       <condition />
-      <phrase>who</phrase>
+      <phrase>who|what</phrase>
       <unique>false</unique>
       <command>nil</command>
       <object></object>
       <helper />
       <message>&gt; "Well, I'm the local herb merchant here.
-I've often wandered through this forest looking for 
+I've often wandered through this forest looking for
 herbs and toadstools, and one day I heard people talking
-about a treasure hidden deep in a cave guarded by a giant. 
-Well, I'm not brave or strong, but you are. 
-So I want YOU to go into the forest and find the trasure. 
+about a treasure hidden deep in a cave guarded by a giant.
+Well, I'm not brave or strong, but you are.
+So I want YOU to go into the forest and find the trasure.
 In exchange, you might get some of my herbs..."</message>
-    </event>     
+    </event>
+    <event name = "old_man_05">
+      <condition />
+      <phrase>help</phrase>
+      <unique>false</unique>
+      <command>nil</command>
+      <object></object>
+      <helper />
+      <message>&gt; "Well, well, well, so you need my help already?
+Look, you'll just have to go into the forest and find
+the treasure, it's simple as that.
+Still, you should be prepared to meet some dangerous
+creatures, and also to solve some riddles.
+For example: you shouldn't leave me without having
+received something from me..."</message>
+    </event>
   </person>
 </room>
 <!--  -->
 <room location = "0|3">
   <exits>S</exits>
-  <info>You are inside the Western Fortress. 
+  <info>You are inside the Western Fortress.
 Everybody has gone out, so it's cold and dark in here. You can just
 see the shining iron of an axe above the chimney. </info>
   <look_text>As you wander around the place and take closer look,
@@ -175,28 +201,29 @@ you find a beautiful little amulet lying under a chair.</look_text>
     <helper />
     <message />
   </event>
-  <item item_id = "axe" />   
+  <item item_id = "axe" />
 </room>
 <!--  -->
 <room location = "0|4">
   <exits>S</exits>
-  <door name ='door_western_fortress'>
+  <door door_id ='door_western_fortress'>
+    <name>Door to the Western Fortress</name>
     <exit>N</exit>
     <identifier>door</identifier>
-    <object>key_west</object>
+    <key>key_west</key>
     <open>false</open>
   </door>
-  <info>You enter the courtyard. 
-Everything is quiet. 
+  <info>You enter the courtyard.
+Everything is quiet.
 In the northern façade, there is a huge wooden entrance door.</info>
 </room>
 <!--  -->
 <room location = "0|5">
-  <exits>WNE</exits> 
+  <exits>WNE</exits>
 <!--
   <exits>NE</exits>
 -->
-  <info>You reach a small abandoned hut in the forest. 
+  <info>You reach a small abandoned hut in the forest.
 There's a sign over it which reads:
 "Western Fortress. Visits: 6 pence"
 In northern direction, a path continues to the castle.</info>
@@ -204,19 +231,19 @@ In northern direction, a path continues to the castle.</info>
 <!--  -->
 <room location = "1|0">
   <exits>ES</exits>
-  <info>You are wandering through the deep, dark forest. 
+  <info>You are wandering through the deep, dark forest.
 You can hardly see anything.</info>
 </room>
 <!--  -->
 <room location = "1|1">
   <exits>NWE</exits>
-  <info>You are wandering through the deep, dark forest. 
+  <info>You are wandering through the deep, dark forest.
 You can hardly see anything.</info>
 </room>
 <!--  -->
 <room location = "1|2">
   <exits>WS</exits>
-  <info>You are just inside the forest. 
+  <info>You are just inside the forest.
 There's an old woman who's weeping and murmuring:
 "Oh dear, oh dear! Oh dear, oh dear!"...</info>
   <event name = "event_003">
@@ -224,7 +251,7 @@ There's an old woman who's weeping and murmuring:
     <unique>true</unique>
     <command>replace_object_by_helper</command>
     <object>info</object>
-    <helper>You are just inside the forest. 
+    <helper>You are just inside the forest.
 The old woman still murmurs about her lost key...</helper>
     <message />
   </event>
@@ -250,9 +277,9 @@ The old woman still murmurs about her lost key...</helper>
       <helper />
       <message>&gt; "Oh, if you would really like to help me...
 Listen: The Western Fortress is abandoned, all the
-soldiers were called to the king's palace. 
+soldiers were called to the king's palace.
 They told me to clean the place before they get back,
-but I've lost the key! Please help me! 
+but I've lost the key! Please help me!
 The key must be somewhere close to the village.
 If you find it, will you bring it to me?"</message>
     </event>
@@ -264,9 +291,9 @@ If you find it, will you bring it to me?"</message>
       <object>small_pipe</object>
       <helper />
       <message>&gt; "Oh, my dear young man, you are so brave!
-I am so proud of you that you found the key 
+I am so proud of you that you found the key
 and brought it to me!
-Here, take this pipe as a small reward. 
+Here, take this pipe as a small reward.
 Thank heavens no-one entered the fortress and stole the amulet!"</message>
     </event>
   </person>
@@ -274,20 +301,20 @@ Thank heavens no-one entered the fortress and stole the amulet!"</message>
 <!--  -->
 <room location = "1|3">
   <exits>NES</exits>
-  <info>You reach a fork. 
+  <info>You reach a fork.
 There's an old derelict sign on the ground which says:
 "To the Village", but you don't know where it originally pointed to.</info>
 </room>
 <!--  -->
 <room location = "1|4">
   <exits>NES</exits>
-  <info>You enter a small village. 
-It is quite deserted, but at the village well, 
+  <info>You enter a small village.
+It is quite deserted, but at the village well,
 you see a girl who looks at you curiously.</info>
   <person person_id="village_girl">
     <name>a beautiful young girl</name>
     <identifier>girl</identifier>
-    <info_text>She looks very nice. 
+    <info_text>She looks very nice.
 Perhaps you should talk to her instead of staring at her...</info_text>
 
     <event name = "village_girl_01">
@@ -318,7 +345,7 @@ Perhaps you should talk to her instead of staring at her...</info_text>
       <object />
       <helper />
       <message>&gt; "Well, there's an old fortress across the river
-and to the west. 
+and to the west.
 It's been looking quite empty lately, though there never
 used to be many soldiers around.
 What do you want there?"</message>
@@ -329,20 +356,20 @@ What do you want there?"</message>
 <!--  -->
 <room location = "1|5">
   <exits>NEW</exits>
-  <info>You come to a bridge crossing a small noisy river. 
-On the north side, the path continues to a village. 
-On the other side, the path forks and continues east and west.</info>  
+  <info>You come to a bridge crossing a small noisy river.
+On the north side, the path continues to a village.
+On the other side, the path forks and continues east and west.</info>
 </room>
 <!--  -->
 <room location = "2|0">
   <exits>NEW</exits>
-  <info>You are wandering through the deep, dark forest. 
+  <info>You are wandering through the deep, dark forest.
 You can hardly see anything.</info>
 </room>
 <!--  -->
 <room location = "2|1">
   <exits>WES</exits>
-  <info>You are wandering through the deep, dark forest. 
+  <info>You are wandering through the deep, dark forest.
 You can hardly see anything.</info>
 </room>
 <!--  -->
@@ -353,7 +380,7 @@ You can hardly see anything.</info>
 <!--  -->
 <room location = "2|3">
   <exits>WS</exits>
-  <info>You are on a narrow path through the forest. 
+  <info>You are on a narrow path through the forest.
 A lot of foliage covers the ground, moved by a cold wind. </info>
   <look_text>As you take a closer look and move some of the foliage,
 you see that there's a rusty old key lying beside a tree
@@ -365,7 +392,7 @@ under the dead leaves...</look_text>
     <object>key_west</object>
     <helper />
     <message />
-  </event>      
+  </event>
 </room>
 <!--  -->
 <room location = "2|4">
@@ -376,18 +403,50 @@ under the dead leaves...</look_text>
 <!--  -->
 <room location = "2|5">
   <exits>WE</exits>
-  <info>Here's a gate or something that blocks your way. You need some item to be able to pass. </info>
+  <info>The way stretches out east and westwards.
+In the south, you can see a long wall with a guard. </info>
+  <person person_id = "forest_warden">
+    <name>The forest wall warden</name>
+    <identifier>warden</identifier>
+    <info_text>This warden doesn't move a bit and won't react
+to anything you might possibly do.</info_text>
+    <event name = "forest_warden_01">
+      <phrase>let.*pass</phrase>
+      <message>You cannot pass.
+Only the ones approved by the seer Humungus the Great
+may pass this gate. You cannot pass.</message>
+    </event>
+    <event name = "forest_warden_02">
+      <phrase>where.*(seer|humu)</phrase>
+      <unique>true</unique>
+      <command>add_to_info_of_object</command>
+      <object>4|5</object>
+      <helper>
+In the northern part of the village, there's
+the hut of the seer you heard about.</helper>
+      <message />
+    </event>
+    <event name = "forest_warden_03">
+      <condition />
+      <phrase>where.*(seer|humu)</phrase>
+      <unique>true</unique>
+      <command>open_door_by_id</command>
+      <object>seers_hut</object>
+      <message>You can find Humungus the great in the next village
+to the east from here.</message>
+    </event>
+  </person>
 </room>
 <!--  -->
 <room location = "3|0">
   <exits>WS</exits>
-  <info>You are wandering through the deep, dark forest. 
+  <info>You are wandering through the deep, dark forest.
 You can hardly see anything.</info>
 </room>
 <!--  -->
 <room location = "3|1">
   <exits>NEW</exits>
-  <info>You are wandering through the deep, dark forest. 
+  <info>You are wandering through the deep, dark forest.
 You can hardly see anything.</info>
 </room>
 <!--  -->
@@ -403,7 +462,34 @@ You can hardly see anything.</info>
 <!--  -->
 <room location = "3|4">
   <exits>WS</exits>
-  <info>You are on a path that spreads out before you in three directions.</info>
+  <info>The path bends from west to south.
+As you walk along the bend, you come across a young
+farmer.</info>
+  <person person_id = "farmer">
+    <name>a young farmer</name>
+    <identifier>farmer</identifier>
+    <info_text>He's a rosy-cheekey young farmer,
+with quite some muscles and a tight shirt.</info_text>
+    <event name = "farmer_01">
+      <phrase>hello|hi</phrase>
+      <message>Hi there, stranger!
+How are you doing?</message>
+    </event>
+    <event name = "farmer_02">
+      <phrase>help</phrase>
+      <message>You need some help?
+Well, you might want to tell me more
+about your quest then...</message>
+    </event>
+    <event name = "farmer_03">
+      <phrase>forest</phrase>
+      <message>You want to go inside the forest?
+Are you mad? There are dangerous creatures inside there!
+Well, anyway, if you want to enter, you'll have to convince
+the guard who blocks the entrance to the forest.
+That won't be easy, though...</message>
+    </event>
+  </person>
 </room>
 <!--  -->
 <room location = "3|5">
@@ -413,23 +499,23 @@ You can hardly see anything.</info>
 <!--  -->
 <room location = "4|0">
   <exits>E</exits>
-  <info>This is an old house. You break open the door and enter. 
+  <info>This is an old house. You break open the door and enter.
 As you look on the floor, you see an item that you can use lateron.</info>
-</room>  
+</room>
 <!--  -->
 <room location = "4|1">
   <exits>W</exits>
-  <info>Ok, you've entered the wrong place. 
-There's a giant here who kills you instantly. 
+  <info>Ok, you've entered the wrong place.
+There's a giant here who kills you instantly.
 
 You're dead. You lose...</info>
 </room>
 <!--  -->
 <room location = "4|2">
   <exits>ES</exits>
-  <info>You are in a village. Villagers advise you not to go to the old house north of here, since it's bewitched. 
+  <info>You are in a village. Villagers advise you not to go to the old house north of here, since it's bewitched.
 Of course, you don't believe a word of it.</info>
-</room>  
+</room>
 <!--  -->
 <room location = "4|3">
   <exits>NE</exits>
@@ -438,12 +524,12 @@ Of course, you don't believe a word of it.</info>
 <!--  -->
 <room location = "4|4">
   <exits>S</exits>
-  <info>You are inside the hut of the seer. 
+  <info>You are inside the hut of the seer.
 It's quite dark in here, and there's a strange smell in the air.</info>
   <person person_id="seer">
-    <name>the seer</name>
-    <identifier>seer</identifier>
-    <info_text>He's very old, his eyes are closed most of the time. 
+    <name>Humungus the Great</name>
+    <identifier>seer|humu</identifier>
+    <info_text>He's very old, his eyes are closed most of the time.
 His white hair flows around his shoulders.</info_text>
     <event name = "seer_01">
       <condition />
@@ -452,8 +538,8 @@ His white hair flows around his shoulders.</info_text>
       <command />
       <object />
       <helper />
-      <message>&gt; "Hello stranger. 
-I have not yet seen you, but your paths are well-known
+      <message>&gt; "Hello stranger.
+I have not yet seen you before, but your paths are well-known
 to my inner eye.
 In what way can I help you?</message>
     </event>
@@ -465,26 +551,37 @@ In what way can I help you?</message>
       <object />
       <helper />
       <message>&gt; "Well, I'm not sure if I should give you this
-piece of information. The king would not like it. 
-If only you had some token to identify you 
+piece of information. The king would not like it.
+If only you had some token to identify you
 as a loyal kingsman"</message>
     </event>
     <event name = "seer_03">
       <condition>inventory.present?("amulet")</condition>
       <phrase />
       <unique>true</unique>
-      <command>add_item_to_room_inventory</command>
-      <object>undefined</object>
-      <helper>4|4</helper>
-      <message></message>
+      <command>add_item_to_player_inventory</command>
+      <object>letter</object>
+      <message>All right, I see you are brave-hearted.
+So, I'll give you this letter, which you will
+hand to the warden. He will let you pass into
+the forest.
+May heavens be kind to you...</message>
     </event>
 
   </person>
 </room>
 <!--  -->
 <room location = "4|5">
-  <exits>WEN</exits>
-  <info>You are on a path that spreads out before you in three directions.</info>
+<!--  <exits>WEN</exits> -->
+  <exits>WE</exits>
+  <info>You are in a little village.</info>
+  <door door_id = "seers_hut">
+    <exit>N</exit>
+    <identifier />
+    <name>the Seer's hut</name>
+    <key>none</key>
+    <open>false</open>
+  </door>
 </room>
 <!--  -->
 <room location = "5|0">
@@ -530,7 +627,7 @@ You lose health.  </info>
 <item item_id = "small_sword">
   <name>A small sword</name>
   <identifier>sword</identifier>
-  <look_text>This slightly rusty and about 4ft long sword was your grandfather's pride in the battle of Hastings... 
+  <look_text>This slightly rusty and about 4ft long sword was your grandfather's pride in the battle of Hastings...
 or something like that.....
   </look_text>
 </item>
@@ -538,7 +635,7 @@ or something like that.....
 <item item_id = "candy">
   <name>Some candy</name>
   <identifier>candy</identifier>
-  <look_text>There's nothing like some sweet candy! 
+  <look_text>There's nothing like some sweet candy!
 It will make your dentist laugh on his yacht!</look_text>
 </item>
 <!--  -->
@@ -565,6 +662,13 @@ letters, but you cannot read them.</look_text>
   <name>A small pipe</name>
   <identifier>pipe</identifier>
   <look_text>This pipe seems ideal for smoking some kind of herbal matter</look_text>
+</item>
+<!--  -->
+<item item_id = "letter">
+  <name>a letter from Humungus</name>
+  <identifier>letter</identifier>
+  <look_text>This piece of paper contains some information.
+Pity you cannot read...</look_text>
 </item>
 <!--  -->
 <item item_id = "undefined">

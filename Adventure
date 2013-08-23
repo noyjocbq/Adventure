@@ -10,7 +10,12 @@
 ####
 ######
 
+##NORMAL
 require "lib/Classes"
+##
+#DEVELOP
+#require "lib/Classes_tmp"
+#
 #Dir[File.dirname(__FILE__) + '/lib/*.rb'].each {|file| require file }
 #require 'tk'
 #require test/unit
@@ -20,9 +25,9 @@ require "lib/Classes"
 ####
 ###
 ##
-# Initialize handlers, player inventory and map
+# Initialize handlers and map including player inventory
 #
-$inventory = Inventory.new
+#$inventory = Inventory.new
 $map = Map.new('map.xml')
 $screen_handler  = Screen.new($map.name)
 $message_handler = Messager.new
