@@ -1,6 +1,6 @@
 DONE - enable checking player inventory - as Map event
-implement checking rooms for specific person
-abandon Perl-like room notation using associative array, change to method
+DONE - implement checking rooms for specific person
+DONE - abandon Perl-like room notation using associative array, change to method
 implement use of "uses" in Items
 DONE - Change checking to include condition for phrase events
 DONE - abandon room @people and @doors, make inventory items.
@@ -9,7 +9,7 @@ implement object search for different kinds of objects
 DONE - new door an neue Struktur anpassen
 DONE - Door - which and whatis - really necessary??
 DONE - Room - which necessary?
-remove ObjectSpace calls
+DONE - remove ObjectSpace calls
 enable different object for event call and action
 DONE - make command add_to_info_of_object
 DONE - make command open_door_by_id

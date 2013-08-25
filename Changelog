@@ -23,3 +23,12 @@ deleted *.class.rb
 created Adventure
 deleted program.rb
 
+v0.6
+
+created message.rb with
+  class Message
+  module Messager
+
+created screen.rb with
+  module Screen
+

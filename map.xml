@@ -7,7 +7,7 @@
 <variable name = "START_ROOM" value = "0|2"/>
 <variable name = "WELCOME_MESSAGE" value = "">Hi!
 Welcome to this game.
-This is version 0.3 of the map.
+This is version 0.6 of the map.
 
 When it's ready, you will go for a trasure hidden in this country.
 You'll have to find objects and use them and do everything you
@@ -48,7 +48,7 @@ give &lt;object&gt; to &lt;person&gt;
 <message identifier = 'error'>An error has ocurred...</message>
 <message identifier = 'use_nohelper'>What shall I use it on?</message>
 <message identifier = 'use_noobject'>What shall I use?</message>
-<message identifier = 'door_opens'>The door opens...</message>
+<message identifier = 'door_opens'>Opening </message>
 <message identifier = 'door_closes'>The door closes</message>
 <message identifier = 'door_noopen'>The door won't open...</message>
 <message identifier = 'door_noclose'>The door won't close</message>
@@ -100,7 +100,7 @@ It's quite dark and stifling, and you see some spider webs along the narrowing p
 Beside you, there's an old man. He points to the path that leads
 into the forest in eastern direction and says:
 
-"Well, young man, there it is - the forest of Pewtyham.
+"Well, young man, there it is - the forest of Sir Arthur Pewty.
 There's a huge trasure hidden in there, and only the bravest
 can aspire to find it.
 I want you to go into the forest, find the treasure and bring it here.
@@ -110,13 +110,14 @@ He grins maliciously... </info>
   <event name = "event_001">
     <condition>visits &gt; 1</condition>
     <unique>true</unique>
-    <command>replace_object_by_helper</command>
-    <object>info</object>
-    <helper>You stand on a small path at the edge of a forest.
-
+    <command>
+      <action>replace_object_by_helper</action>
+      <object>info</object>
+      <helper>You stand on a small path at the edge of a forest.
 The old man says: "Well, sonny, what about the treasure?
 Didn't I tell you not to come back until you have it?
 Hurry up, my dinner's getting cold!"</helper>
+    </command>
     <message />
   </event>
   <person person_id="old_man">
@@ -126,62 +127,55 @@ Hurry up, my dinner's getting cold!"</helper>
     <event name = "old_man_01">
       <condition>inventory.present?('candy')</condition>
       <phrase>give.+(herb|weed)</phrase>
-      <unique>true</unique>
-      <command>add_item_to_player_inventory</command>
-      <object>herbs</object>
-      <helper />
-      <message>&gt; "Here, have these herbs.
-&gt; I hope you have an adequate pipe yourself!"</message>
+      <unique>false</unique>
+      <command>
+        <action>add_item_to_player_inventory</action>
+        <object>herbs</object>
+        <helper />
+      </command>
+      <message>Here, have these herbs.
+I hope you have an adequate pipe yourself!</message>
     </event>
     <event name = "old_man_02">
       <condition>inventory.present?('candy') == false</condition>
       <phrase>give.+(herb|weed)</phrase>
-      <unique>true</unique>
+      <unique>false</unique>
       <command />
       <object />
       <helper />
-      <message>&gt; "Well, I hope you don't expect me to
+      <message>Well, I hope you don't expect me to
 give you some of my precious herbs without something
-in exchange..."</message>
+in exchange...</message>
     </event>
     <event name = "old_man_03">
       <condition />
       <phrase>hello|hi</phrase>
       <unique>false</unique>
-      <command>nil</command>
-      <object></object>
-      <helper />
-      <message>&gt; "Hi There!"</message>
+      <message>Hi There!</message>
     </event>
     <event name = "old_man_04">
       <condition />
       <phrase>who|what</phrase>
       <unique>false</unique>
-      <command>nil</command>
-      <object></object>
-      <helper />
-      <message>&gt; "Well, I'm the local herb merchant here.
+      <message>Well, I'm the local herb merchant here.
 I've often wandered through this forest looking for
 herbs and toadstools, and one day I heard people talking
 about a treasure hidden deep in a cave guarded by a giant.
 Well, I'm not brave or strong, but you are.
 So I want YOU to go into the forest and find the trasure.
-In exchange, you might get some of my herbs..."</message>
+In exchange, you might get some of my herbs...</message>
     </event>
     <event name = "old_man_05">
       <condition />
       <phrase>help</phrase>
       <unique>false</unique>
-      <command>nil</command>
-      <object></object>
-      <helper />
-      <message>&gt; "Well, well, well, so you need my help already?
+      <message>Well, well, well, so you need my help already?
 Look, you'll just have to go into the forest and find
 the treasure, it's simple as that.
 Still, you should be prepared to meet some dangerous
 creatures, and also to solve some riddles.
 For example: you shouldn't leave me without having
-received something from me..."</message>
+received something from me...</message>
     </event>
   </person>
 </room>
@@ -192,13 +186,16 @@ received something from me..."</message>
 Everybody has gone out, so it's cold and dark in here. You can just
 see the shining iron of an axe above the chimney. </info>
   <look_text>As you wander around the place and take closer look,
-you find a beautiful little amulet lying under a chair.</look_text>
+you find a beautiful little amulet lying under a chair.
+It carries Sir Arthur Pewty's coat of arms</look_text>
   <event name = "event_004">
     <condition>looks &gt; 0</condition>
     <unique>true</unique>
-    <command>add_item_to_inventory</command>
-    <object>amulet</object>
-    <helper />
+    <command>
+      <action>add_item_to_inventory</action>
+      <object>amulet</object>
+      <helper />
+    </command>
     <message />
   </event>
   <item item_id = "axe" />
@@ -207,7 +204,7 @@ you find a beautiful little amulet lying under a chair.</look_text>
 <room location = "0|4">
   <exits>S</exits>
   <door door_id ='door_western_fortress'>
-    <name>Door to the Western Fortress</name>
+    <name>door to the Western Fortress</name>
     <exit>N</exit>
     <identifier>door</identifier>
     <key>key_west</key>
@@ -219,14 +216,22 @@ In the northern façade, there is a huge wooden entrance door.</info>
 </room>
 <!--  -->
 <room location = "0|5">
-  <exits>WNE</exits>
+  <exits>WE</exits>
 <!--
   <exits>NE</exits>
 -->
-  <info>You reach a small abandoned hut in the forest.
-There's a sign over it which reads:
-"Western Fortress. Visits: 6 pence"
-In northern direction, a path continues to the castle.</info>
+  <info>The path stretches out east and westward.
+In northern direction, there's a gate with a sign that reads:
+"Sir Arthur Pewty's Western Fortress.
+No Trespassing!"
+  </info>
+  <door door_id ='gate_western_fortress'>
+    <name>gate to the Western Fortress</name>
+    <exit>N</exit>
+    <identifier>gate</identifier>
+    <key />
+    <open>false</open>
+  </door>
 </room>
 <!--  -->
 <room location = "1|0">
@@ -266,7 +271,7 @@ The old woman still murmurs about her lost key...</helper>
       <command>nil</command>
       <object />
       <helper />
-      <message>&gt; "Oh dear me, I'll be in so much trouble..."</message>
+      <message>Oh dear me, I'll be in so much trouble...</message>
     </event>
     <event name = "old_woman_02">
       <condition />
@@ -275,13 +280,13 @@ The old woman still murmurs about her lost key...</helper>
       <command>nil</command>
       <object />
       <helper />
-      <message>&gt; "Oh, if you would really like to help me...
+      <message>Oh, if you would really like to help me...
 Listen: The Western Fortress is abandoned, all the
 soldiers were called to the king's palace.
 They told me to clean the place before they get back,
 but I've lost the key! Please help me!
 The key must be somewhere close to the village.
-If you find it, will you bring it to me?"</message>
+If you find it, will you bring it to me?</message>
     </event>
     <event name = "old_woman_03">
       <condition>inventory.present?("key_west")</condition>
@@ -290,11 +295,11 @@ If you find it, will you bring it to me?"</message>
       <command>add_item_to_player_inventory</command>
       <object>small_pipe</object>
       <helper />
-      <message>&gt; "Oh, my dear young man, you are so brave!
+      <message>Oh, my dear young man, you are so brave!
 I am so proud of you that you found the key
 and brought it to me!
 Here, take this pipe as a small reward.
-Thank heavens no-one entered the fortress and stole the amulet!"</message>
+Thank heavens no-one entered the fortress and stole the amulet!</message>
     </event>
   </person>
 </room>
@@ -324,7 +329,7 @@ Perhaps you should talk to her instead of staring at her...</info_text>
       <command>nil</command>
       <object />
       <helper />
-      <message>&gt; "Hi stranger! Can I help you?"</message>
+      <message>Hi stranger! Can I help you?</message>
     </event>
 
     <event name = "village_girl_02">
@@ -334,7 +339,7 @@ Perhaps you should talk to her instead of staring at her...</info_text>
       <command>nil</command>
       <object />
       <helper />
-      <message>&gt; "Of course I will help you. What's the problem?"</message>
+      <message>Of course I will help you. What's the problem?</message>
     </event>
 
     <event name = "village_girl_03">
@@ -344,11 +349,11 @@ Perhaps you should talk to her instead of staring at her...</info_text>
       <command>nil</command>
       <object />
       <helper />
-      <message>&gt; "Well, there's an old fortress across the river
+      <message>Well, there's an old fortress across the river
 and to the west.
 It's been looking quite empty lately, though there never
 used to be many soldiers around.
-What do you want there?"</message>
+What do you want there?</message>
     </event>
 
   </person>
@@ -388,9 +393,11 @@ under the dead leaves...</look_text>
   <event name = "event_2|3_01">
     <condition>looks &gt; 0</condition>
     <unique>true</unique>
-    <command>add_item_to_inventory</command>
-    <object>key_west</object>
-    <helper />
+    <command>
+      <action>add_item_to_inventory</action>
+      <object>key_west</object>
+      <helper />
+    </command>
     <message />
   </event>
 </room>
@@ -419,19 +426,22 @@ may pass this gate. You cannot pass.</message>
     <event name = "forest_warden_02">
       <phrase>where.*(seer|humu)</phrase>
       <unique>true</unique>
-      <command>add_to_info_of_object</command>
-      <object>4|5</object>
-      <helper>
+      <command>
+        <action>add_to_info_of_object</action>
+        <object>4|5</object>
+        <helper>
 In the northern part of the village, there's
 the hut of the seer you heard about.</helper>
+      </command>
       <message />
     </event>
     <event name = "forest_warden_03">
-      <condition />
       <phrase>where.*(seer|humu)</phrase>
       <unique>true</unique>
-      <command>open_door_by_id</command>
-      <object>seers_hut</object>
+      <command>
+        <action>open_door_by_id</action>
+        <object>seers_hut</object>
+      </command>
       <message>You can find Humungus the great in the next village
 to the east from here.</message>
     </event>
@@ -531,6 +541,7 @@ It's quite dark in here, and there's a strange smell in the air.</info>
     <identifier>seer|humu</identifier>
     <info_text>He's very old, his eyes are closed most of the time.
 His white hair flows around his shoulders.</info_text>
+    <item item_id = "letter" />
     <event name = "seer_01">
       <condition />
       <phrase>hi|hello</phrase>
@@ -538,7 +549,7 @@ His white hair flows around his shoulders.</info_text>
       <command />
       <object />
       <helper />
-      <message>&gt; "Hello stranger.
+      <message>Hello stranger.
 I have not yet seen you before, but your paths are well-known
 to my inner eye.
 In what way can I help you?</message>
@@ -550,24 +561,26 @@ In what way can I help you?</message>
       <command></command>
       <object />
       <helper />
-      <message>&gt; "Well, I'm not sure if I should give you this
+      <message>Well, I'm not sure if I should give you this
 piece of information. The king would not like it.
 If only you had some token to identify you
-as a loyal kingsman"</message>
+as a loyal kingsman</message>
     </event>
     <event name = "seer_03">
       <condition>inventory.present?("amulet")</condition>
       <phrase />
       <unique>true</unique>
-      <command>add_item_to_player_inventory</command>
-      <object>letter</object>
+      <command>
+        <action>add_item_to_helper_inventory</action>
+        <object>spinster</object>
+        <helper>4|0</helper>
+      </command>
       <message>All right, I see you are brave-hearted.
-So, I'll give you this letter, which you will
-hand to the warden. He will let you pass into
-the forest.
-May heavens be kind to you...</message>
+This is what I can do for you:
+I will tell old Miss Mary-Ann to wait for you.
+She will be in the dark village in the far north.
+Tell her Vladimir sent you.</message>
     </event>
-
   </person>
 </room>
 <!--  -->
@@ -665,7 +678,7 @@ letters, but you cannot read them.</look_text>
 </item>
 <!--  -->
 <item item_id = "letter">
-  <name>a letter from Humungus</name>
+  <name>a letter for the warden</name>
   <identifier>letter</identifier>
   <look_text>This piece of paper contains some information.
 Pity you cannot read...</look_text>
@@ -676,6 +689,27 @@ Pity you cannot read...</look_text>
   <identifier>something</identifier>
   <look_text>dummy text</look_text>
 </item>
+
+<!--  -->
+<!--  People not originally associated with a room  -->
+<!--  -->
+<person person_id="spinster">
+  <name>an old spinster lady</name>
+  <identifier>spinster|lady</identifier>
+  <info_text>This woman looks older than the Stonhenge stones...</info_text>
+  <item item_id = "letter" />
+  <event name = "spinster_01">
+    <phrase>hi</phrase>
+    <unique>true</unique>
+    <command>
+      <action>pass_item_to_player</action>
+      <object>letter</object>
+    </command>
+    <message>Here, give this letter to the warden.
+He will let you pass into the deep forest.
+But beware...</message>
+  </event>
+</person>
 
 <!--  -->
 <!--  What is initially in the player's inventory  -->
