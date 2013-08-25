@@ -55,7 +55,7 @@ module Map
 #
 #
   def read_map(mapfile)
-
+    mapfile = File.join("lib", "adventure", "data", mapfile)
     xml = Document.new(File.open(mapfile))
     @@name = xml.root.attributes["name"]
 
