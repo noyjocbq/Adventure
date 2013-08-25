@@ -23,7 +23,13 @@ deleted *.class.rb
 created Adventure
 deleted program.rb
 
-v0.6
+####
+###
+##
+#      v0.6
+##
+###
+####
 
 created message.rb with
   class Message
@@ -31,4 +37,45 @@ created message.rb with
 
 created screen.rb with
   module Screen
+
+created map.rb with
+  module Map
+
+created event.rb with
+  class EventCommand
+  class Event
+
+created item.rb with
+  class Item and depending classes
+  class Room
+  class Person
+  class Thing
+  class Door
+
+created inventory.rb with
+  class Inventory
+
+created command.rb with
+  module Command
+
+DONE - enable checking player inventory - as Map event
+DONE - implement checking rooms for specific person
+DONE - abandon Perl-like room notation using associative array, change to method
+DONE - Change checking to include condition for phrase events
+DONE - abandon room @people and @doors, make inventory items.
+DONE - new door an neue Struktur anpassen
+DONE - Door - which and whatis - really necessary??
+DONE - Room - which necessary?
+DONE - remove ObjectSpace calls
+DONE - enable different object for event call and action
+DONE - make command add_to_info_of_object
+DONE - make command open_door_by_id
+DONE - implement containing room for doors
+DONE - room_id
+DONE - door_id, also at map level
+DONE - not new if exists
+DONE - message_id
+DONE - people at map level
+REJECTED - no inventory.add_byid must create thing if necessary
+DONE - add_thing instead of inventory.add
 

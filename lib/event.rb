@@ -6,18 +6,27 @@
 ###
 #### v0.6
 
-class EventCommand < Object
+class EventCommand
   def initialize (action, object=nil, helper=nil)
     @action = action
     @object = object
     @helper = helper
+##
+#DEBUG
+#~ printf ("New comm.: A:%10.10s O: %5.5s, H: %5.5s\n", @action.to_s, @object.to_s, @helper.to_s)
+#~ printf (">ID %10s\n", self.to_s.slice(-10..-1))
+#
+##
     self
   end
   attr_reader :action, :object, :helper
 end # class
+
+####
+###
 ##
 #
-class Event < Object
+class Event
   def initialize (name, unique, condition, phrase, message, associated)
     @name             = name
     @triggered        = 0
@@ -31,6 +40,12 @@ class Event < Object
     @commands         = []
     @message          = message
     @associated       = associated
+##
+#DEBUG
+#~ printf ("New event: %10.10s c: %5.5s, p: %5.5s\n", @name.to_s, @condition.to_s, @phrase.to_s)
+#~ printf (">ID: %10s\n", self.to_s.slice(-10..-1))
+#
+##
     self
   end # initialize
 attr_reader :name, :condition, :commands, :message, :triggered, :associated, :unique
@@ -49,6 +64,13 @@ attr_reader :name, :condition, :commands, :message, :triggered, :associated, :un
   def add_command (action, object = nil, helper = nil)
     mycommand = EventCommand.new(action, object, helper)
     @commands.push(mycommand)
+##
+#DEBUG
+#~ printf ("Adding comm.: A:%10.10s c: %5.5s, p: %5.5s\n", action.to_s, object.to_s, helper.to_s)
+#~ printf (">IDs: E: %10.10s  C: %10.10s\n", self.to_s.slice(-10..-1), mycommand.to_s.slice(-10..-1))
+#
+##
+
     mycommand
   end #add_command
 
@@ -92,72 +114,75 @@ attr_reader :name, :condition, :commands, :message, :triggered, :associated, :un
 #
   def check(phrase = nil)
     answer = false
-
+##
+# DEBUG
+#~ printf ("Checking %10.10s : %2d\n", self.to_s.slice(-10..-1), check_condition + check_phrase(phrase))
+#
+##
     if (check_condition + check_phrase(phrase)) > 0 &&
     ((not @unique) || @triggered == 0) # execute
 
       self.trigger
-if @events.nil?
- mylength = 0
-else
-  mylength = @events.length
-end
-Messager.pass_message("Still alive: " + name)
-Messager.pass_message(" Commands: " + mylength.to_s + "\n")
-
+##
+# DEBUG
+#~ puts "Triggered!"
+#
+##
       @commands.each do |command|
-Messager.pass_message("Command action: " + @action.to_s + "\n")
-Messager.pass_message("Command object: " + @object.to_s + "\n")
-Messager.pass_message("Command helper: " + @helper.to_s + "\n")
-
-        case @action
-
+##
+# DEBUG
+#~ printf ("Command! A:%10.10s , O:%5.5s, H:%5.5s\n", command.action.to_s, command.object.to_s, command.helper.to_s)
+#~ printf (">IDS: E: %10.10s  C: %10.10s\n", self.to_s.slice(-10..-1), command.to_s.slice(-10..-1))
+#
+##
+        case command.action
           when /replace_object_by_helper/:
-            eval('@associated.' + @object + " = %q{" + @helper + "} ")
+            eval('@associated.' + command.object + " = %q{" + command.helper + "} ")
 
           when /add_helper_to_object/ :
-            eval('@associated.' + @object + " << %q{" + @helper + "} ")
+            eval('@associated.' + command.object + " << %q{" + command.helper + "} ")
 
           when /add_item_to_inventory/:
-            @associated.inventory.add_byId(@object)
+            @associated.inventory.add_byId(command.object)
 
           when /withdraw_item_from_inventory/:
-            @associated.inventory.withdraw(Item.which(@object))
+            @associated.inventory.withdraw(Item.which(command.object))
 
           when /pass_item_to_player/:
-            myobject = Item.which(@object)
+            myobject = Item.which(command.object)
             @associated.inventory.withdraw(myobject)
             Map.inventory.add(myobject)
 
           when /retrieve_item_from_player/:
-            myobject = Item.which(@object)
+            myobject = Item.which(command.object)
             @associated.inventory.add(myobject)
             Map.inventory.withdraw(myobject)
 
           when /add_item_to_player_inventory/:
-Messager.pass_message("Still alive: #{@object}")
+            Map.inventory.add_byId(command.object)
 
-            Map.inventory.add_byId(@object)
-
-          when /withdraw_from_player_inventory/:
-            Map.inventory.withdraw(Item.which(@object))
+          when /withdraw_item_from_player_inventory/:
+            Map.inventory.withdraw(Item.which(command.object))
 
           when /add_item_to_helper_inventory/:
-            Item.which(@helper).inventory.add_byId(@object)
+            Item.which(command.helper).inventory.add_byId(command.object)
 
-          when /withdraw_from_helper_inventory/:
-            Item.which(@helper).withdraw(Item.which(@object))
+          when /withdraw_item_from_helper_inventory/:
+            Item.which(command.helper).inventory.withdraw(Item.which(command.object))
 
           when /add_to_info_of_object/:
-            (Item.which(@object)).info << @helper
+            (Item.which(command.object)).info << command.helper
+
+          when /replace_info_of_object/:
+            (Item.which(command.object)).info = command.helper
 
           when /open_door_by_id/:
-            (Item.which(@object)).open
+            (Item.which(command.object)).open
 
           when /close_door_by_id/:
-            (Item.which(@object)).close
+            (Item.which(command.object)).close
 
-        end # case @action
+        end # case command.action
       end #@commands.each do |command|
 
       if not @message.nil?

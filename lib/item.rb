@@ -63,7 +63,12 @@ class Item < Object
 # Add a door
 #
   def add_door(id, identifier, exit, open, key=nil, name=nil, info=nil, look="There's nothing much to see...")
-    door = Door.new(id, identifier, exit, open, self, key, name, info, look)
+    door = Item.which(id, 'Door')
+    if door.nil?
+      door = Door.new(id, identifier, exit, open, self, key, name, info, look)
+    else
+      door.room = self
+    end
     @inventory.add(door)
     door
   end # add_door
@@ -73,10 +78,35 @@ class Item < Object
 ##
 # Add a person
 #
-  def add_person(person_id, identifier, name, info, look="There's nothing much to see...")
-    person = Person.new(person_id, identifier, name, info, look)
+  def add_person(id, identifier, name, info, look="There's nothing much to see...")
+    person = Item.which(id, 'Person')
+    person = Person.new(id, identifier, name, info, look) if person.nil?
     @inventory.add(person)
     person
+  end # add_person
+
+####
+###
+##
+# Add a thing
+#
+  def add_thing(id, identifier, use_with, name, info, look="There's nothing much to see...")
+    thing = Item.which(id, 'Thing')
+    thing = Thing.new(id, identifier, use_with, name, info, look) if thing.nil?
+    @inventory.add(thing)
+    thing
+  end # add_person
+
+####
+###
+##
+# Add a room
+#
+  def add_room(id, identifier, exits, name, info, look="There's nothing much to see...")
+    room = Item.which(id, 'Room')
+    room = Room.new(id, identifier, exits, name, info, look) if room.nil?
+    @inventory.add(room)
+    room
   end # add_person
 
 
@@ -230,7 +260,8 @@ class Door < Item
     self
   end
 
-  attr_reader :exit, :open, :key
+  attr_reader :exit, :open, :key, :room
+  attr_writer :room
 
 ####
 ###
@@ -264,25 +295,6 @@ class Door < Item
     Map.room.exits = myexits
     true
   end # close
-
-####
-###
-##
-# which & whatis
-#
-  #~ def Door.whatis(phrase)
-    #~ ObjectSpace.each_object(Door) do |door|
-      #~ return door unless Regexp.new(door.identifier).=~(phrase) == nil
-    #~ end # ObjectSpace.each_object(Door)
-    #~ nil
-  #~ end # Door.whatis
-#~
-  #~ def Door.which(name)
-    #~ ObjectSpace.each_object(Door) do |door|
-      #~ return door if door.name == name
-    #~ end # ObjectSpace.each_object(Door)
-    #~ nil
-  #~ end # Door.which
 
 end   # class Door
 

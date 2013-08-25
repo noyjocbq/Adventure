@@ -20,15 +20,23 @@ module Map
   attr_reader :name, :current_room, :welcome_message, :inventory, :events #, :initial
 #  attr_writer :initial
 
+####
+###
+## Some helper methods
+#
+#
   def welcome_message
     @@welcome_message
   end
+
   def inventory
     @@inventory
   end
+
   def events
     @@events
   end
+
   def name
     @@name
   end
@@ -41,6 +49,11 @@ module Map
     return false
   end
 
+####
+###
+## Read and digest the map file
+#
+#
   def read_map(mapfile)
 
     xml = Document.new(File.open(mapfile))
@@ -57,7 +70,7 @@ module Map
 
     xml.elements.each("Map/message") do |message|
       mymessage = Message.new(
-        message.attributes["identifier"] ,
+        message.attributes["message_id"] ,
         message.text)
     end # xml.elements.each("Map/message")
 
@@ -97,7 +110,14 @@ module Map
         person.text("look_text")
       )
       person.elements.each("item") do |item|
-        myperson.inventory.add_byId(item.attributes["item_id"])
+        myperson.add_thing(
+          item.attributes["item_id"],
+          item.text("identifier"),
+          item.text("use_with"),
+          item.text("name"),
+          item.text("info"),
+          item.text("look_text")
+        )
       end
       person.elements.each("event") do |event|
         myevent = myperson.add_event(
@@ -117,26 +137,48 @@ module Map
       end # person.elements.each("event") do |event|
     end #xml.elements.each("Map/person") do |person|
 
-    xml.elements.each("Map/event") do |event|
-      myevent = Map.add_event(
-        event.attributes["name"],
-        event.text("unique"),
-        event.text("condition"),
-        event.text("phrase"),
-        event.text("message")
+    xml.elements.each("Map/door") do |door|
+      mydoor = Door.new(
+        door.attributes["door_id"],
+        door.text("identifier"),
+        door.text("exit"),
+        door.text("open"),
+        door.text("key"),
+        door.text("name"),
+        door.text("info"),
+        door.text("look_text")
       )
-      event.elements.each("command") do |command|
-        myevent.add_command(
-          command.text("action"),
-          command.text("object"),
-          command.text("helper")
+      door.elements.each("item") do |item|
+        mydoor.add_thing(
+          item.attributes["item_id"],
+          item.text("identifier"),
+          item.text("use_with"),
+          item.text("name"),
+          item.text("info"),
+          item.text("look_text")
         )
-      end #xml.elements.each("command") do |command|
-    end # xml.elements.each("Map/event") do |event|
+      end
+      door.elements.each("event") do |event|
+        myevent = mydoor.add_event(
+          event.attributes["name"],
+          event.text("unique"),
+          event.text("condition"),
+          event.text("phrase"),
+          event.text("message")
+        )
+        event.elements.each("command") do |command|
+          myevent.add_command(
+            command.text("action"),
+            command.text("object"),
+            command.text("helper")
+          )
+        end #xml.elements.each("command") do |command|
+      end # person.elements.each("event") do |event|
+    end #xml.elements.each("Map/door") do |door|
 
     xml.elements.each("Map/room") do |room|
       myroom = Room.new(
-        room.attributes["location"],
+        room.attributes["room_id"],
         room.text("identifier"),
         room.text("exits"),
         room.text("name"),
@@ -161,7 +203,14 @@ module Map
       end # room.elements.each("event") do |event|
 
       room.elements.each("item") do |item|
-        myroom.inventory.add_byId(item.attributes["item_id"])
+        myroom.add_thing(
+          item.attributes["item_id"],
+          item.text("identifier"),
+          item.text("use_with"),
+          item.text("name"),
+          item.text("info"),
+          item.text("look_text")
+        )
       end # room.elements.each("item") do |item|
 
       room.elements.each("door") do |door|
@@ -175,6 +224,16 @@ module Map
           door.text("info"),
           door.text("look_text")
         )
+        door.elements.each("item") do |item|
+          mydoor.add_thing(
+            item.attributes["item_id"],
+            item.text("identifier"),
+            item.text("use_with"),
+            item.text("name"),
+            item.text("info"),
+            item.text("look_text")
+          )
+        end #door.elements.each("item") do |item|
         door.elements.each("event") do |event|
           myevent = mydoor.add_event(
             event.attributes["name"],
@@ -203,8 +262,16 @@ module Map
         )
 
         person.elements.each("item") do |item|
-          myperson.inventory.add_byId(item.attributes["item_id"])
+          myperson.add_thing(
+          item.attributes["item_id"],
+          item.text("identifier"),
+          item.text("use_with"),
+          item.text("name"),
+          item.text("info"),
+          item.text("look_text")
+        )
         end
+
         person.elements.each("event") do |event|
           myevent = myperson.add_event(
             event.attributes["name"],
@@ -224,10 +291,27 @@ module Map
       end # room.elements.each("person") do |person|
     end # xml.elements.each("Map/room") do |room|
 
+    xml.elements.each("Map/event") do |event|
+      myevent = Map.add_event(
+        event.attributes["name"],
+        event.text("unique"),
+        event.text("condition"),
+        event.text("phrase"),
+        event.text("message")
+      )
+      event.elements.each("command") do |command|
+        myevent.add_command(
+          command.text("action"),
+          command.text("object"),
+          command.text("helper")
+        )
+      end #xml.elements.each("command") do |command|
+    end # xml.elements.each("Map/event") do |event|
+
     xml.elements.each("Map/start_inventory") do |item|
       @@inventory.add_byId(item.text)
     end
-    @@current_room = room(@@start_room)
+    @@current_room = Map.room(@@start_room)
     @@current_room.visit
     self
   end
@@ -236,7 +320,7 @@ module Map
 #
 ##
 ###
-#### Map Methods
+#### Other Methods
 
 ####
 ###
@@ -270,8 +354,6 @@ module Map
 
   end
 
-######
-#####
 ####
 ###
 ##
@@ -285,8 +367,6 @@ module Map
 #    @room[@room_id]
   end
 
-######
-#####
 ####
 ###
 ##

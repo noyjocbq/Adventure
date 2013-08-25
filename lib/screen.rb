@@ -31,7 +31,7 @@ module Screen
     if @win_root.nil?
       @win_root  =  TkRoot.new() {
         title(@title)
-       minsize(400, 400)
+#       minsize(400, 400)
       }
       TkGrid.columnconfigure @win_root, 0, :weight=>0
       TkGrid.columnconfigure @win_root, 1, :weight=>1
